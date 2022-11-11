@@ -17,10 +17,10 @@
     }
     canvas, #game-start, #game-over {
         border: 1px solid gray;
-        /* width: 854px;
-        height: 480px; */
-        width: 1400px;
-        height: 750px;
+        width: 854px;
+        height: 480px;
+        /* width: 1400px;
+        height: 750px; */
     }
     canvas {
         background: url(background.jpeg);
@@ -118,16 +118,16 @@
         let collectedGems = 0;      // The number of gems collected in the game
 
         /* Create the game area */
-        // canvas width & height: 1400px, 750px;
-        const gameArea = BoundingBox(context, 50, 100, 420, 750);
+        // canvas width & height: 854, 480;
+        const gameArea = BoundingBox(context, 50, 100, 430, 750);
 
         /* Create the sprites in the game */
 
-        // skeleton defines the boundary of the game area -> 结界 :P
-        const skeleton1 = Skeleton(context, 50, 70);
-        const skeleton2 = Skeleton(context, 800, 70);
-        const skeleton3 = Skeleton(context, 50, 400);
-        const skeleton4 = Skeleton(context, 800, 400);
+        // Private setting: ghost player being the 亡灵 of the skeleton lolll:P
+        // const skeleton1 = Skeleton(context, 50, 70);
+        // const skeleton2 = Skeleton(context, 800, 70);
+        const skeleton1 = Skeleton(context, 50, 410);
+        const skeleton2 = Skeleton(context, 800, 410);
 
         /* The main processing of the game */
         function doFrame(now) {
@@ -147,8 +147,6 @@
             /* Update the sprites */
             skeleton1.update(now);
             skeleton2.update(now);
-            skeleton3.update(now);
-            skeleton4.update(now);
 
             /* TODO */
             /* Randomize the gem and collect the gem here */
@@ -160,8 +158,6 @@
             /* Draw the sprites */
             skeleton1.draw();
             skeleton2.draw();
-            skeleton3.draw();
-            skeleton4.draw();
 
             /* Process the next frame */
             requestAnimationFrame(doFrame);
