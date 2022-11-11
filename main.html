@@ -10,6 +10,14 @@
     #game-container {
         position: relative;
     }
+    #instruction {
+        position: relative;
+        top: 480px;
+        width: 854px;
+        padding: 10px;
+        border: 3px solid black;
+        box-sizing: border-box;
+    }
     canvas, #counter, #game-start, #game-over {
         position: absolute;
         top: 0px;
@@ -66,6 +74,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" id="game-start">
             <defs>
                 <linearGradient id="title-fill" x1="0" y1="0" x2="0" y2="1">
+                    <!-- Halloween color -->
                     <stop offset="0.2" stop-color="#F75F1C" />
                     <stop offset="0.4" stop-color="#FF9A00" />
                     <stop offset="0.6" stop-color="#881EE4" />
@@ -90,6 +99,10 @@
                 gem(s).
             </text>
         </svg>
+    </div>
+    <div id="instruction">
+        <text>Instruction: .... </text><br>
+        <text>CheatMode: xxx</text>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
@@ -124,8 +137,6 @@
         /* Create the sprites in the game */
 
         // Private setting: ghost player being the 亡灵 of the skeleton lolll:P
-        // const skeleton1 = Skeleton(context, 50, 70);
-        // const skeleton2 = Skeleton(context, 800, 70);
         const skeleton1 = Skeleton(context, 50, 410);
         const skeleton2 = Skeleton(context, 800, 410);
 
