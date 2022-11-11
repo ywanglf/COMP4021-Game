@@ -72,7 +72,7 @@
                     <stop offset="0.8" stop-color="#85E21F" />
                 </linearGradient>
             </defs>
-            <text id="game-title" x="50%" y="45%">Ghost Man! #128123</text>
+            <text id="game-title" x="50%" y="45%">Ghost Man!</text>
             <text x="50%" y="60%">Click here to start the game</text>
         </svg>
 
@@ -119,9 +119,11 @@
 
         /* Create the game area */
         // canvas width & height: 1400px, 750px;
-        const gameArea = BoundingBox(context, 150, 150, 600, 1250);
+        const gameArea = BoundingBox(context, 50, 100, 420, 750);
 
         /* Create the sprites in the game */
+
+        // skeleton defines the boundary of the game area -> 结界 :P
         const skeleton1 = Skeleton(context, 50, 70);
         const skeleton2 = Skeleton(context, 800, 70);
         const skeleton3 = Skeleton(context, 50, 400);
