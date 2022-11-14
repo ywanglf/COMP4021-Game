@@ -10,13 +10,27 @@
     #game-container {
         position: relative;
     }
-    #instruction {
+    /* #game-header{
         position: relative;
-        top: 480px;
+        top: 0px;
         width: 854px;
         padding: 10px;
         border: 3px solid black;
         box-sizing: border-box;
+    } */
+    #instruction {
+        background: url(instruction_background.png);
+        background-size: contain;
+        font-size: 12px;
+        color: white;
+        position: relative;
+        top: 480px;
+        width: 836px;
+        padding: 10px;
+        padding-bottom: 60px;
+        line-height: 30px;
+        /* border: 20px solid black; */
+        /* box-sizing: border-box; */
     }
     canvas, #counter, #game-start, #game-over {
         position: absolute;
@@ -62,6 +76,9 @@
     </style>
 </head>
 <body>
+    <!-- <div id="game-header">
+        GhostMan
+    </div> -->
     <div id="game-container">
         <canvas width="854px" height="480px"></canvas>
 
@@ -101,8 +118,13 @@
         </svg>
     </div>
     <div id="instruction">
-        <text>Instruction: .... </text><br>
-        <text>CheatMode: xxx</text>
+        <text>Instruction: </text><br>
+        <text>1. Press up, down, left, right to move the ghost.</text><br>
+        <text>2. Set obstacle by key ___</text><br>
+        <text>3. Destroy the obstacle by key ___</text><br>
+        <text></text>
+        <text><b>CheatMode:</b></text> <br>
+        <text>Press Space Bar to Speedup!</text>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>

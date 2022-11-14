@@ -15,7 +15,7 @@ const BoundingBox = function(ctx, top, left, bottom, right) {
     // bounding box.
     const path = new Path2D();
     path.rect(left, top, right - left, bottom - top);
-    ctx.fillStyle = "white";
+    // ctx.fillStyle = "white";
     ctx.fill(path);
 
     // This function gets the top side of the bounding box.
