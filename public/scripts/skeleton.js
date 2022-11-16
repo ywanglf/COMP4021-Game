@@ -11,7 +11,7 @@ const Skeleton = function(ctx, x, y) {
     sprite.setSequence(sequences.third)
         .setScale(2)
         .setShadowScale({ x: 0.75, y: 0.2 })
-        .useSheet("skeleton_sprite.png");
+        .useSheet("static/skeleton_sprite.png");
 
     // The methods are returned as an object here.
     return {

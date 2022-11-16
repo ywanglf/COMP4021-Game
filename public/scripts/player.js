@@ -29,7 +29,7 @@ const Player = function(ctx, x, y, gameArea) {
     sprite.setSequence(sequences.idleDown)
           .setScale(1.5)
           .setShadowScale({ x: 0.75, y: 0.20 })
-          .useSheet("ghosts_sprite.png");
+          .useSheet("static/ghosts_sprite.png");
 
     // This is the moving direction, which can be a number from 0 to 4:
     // - `0` - not moving
