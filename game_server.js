@@ -14,14 +14,14 @@ app.use(express.static("public"));
 app.use(express.json());
 
 // Use the session middleware to maintain sessions
-const chatSession = session({
+const gameSession = session({
     secret: "game",
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: { maxAge: 300000 }
 });
-app.use(chatSession);
+app.use(gameSession);
 
 // This helper function checks whether the text only contains word characters
 function containWordCharsOnly(text) {
@@ -34,13 +34,13 @@ app.post("/register", (req, res) => {
     const { username, avatar, name, password } = req.body;
 
     //
-    // D. Reading the users.json file
+    // Reading the users.json file
     //
     const users = JSON.parse(fs.readFileSync("data/users.json"));
 
     //
-    // E. Checking for the user data correctness
-    //    if any field is empty, return an error
+    // Checking for the user data correctness
+    // if any field is empty, return an error
     if (!username || !avatar || !name || !password){
         res.json({
             status: "error",
@@ -49,7 +49,8 @@ app.post("/register", (req, res) => {
 
         return;
     }
-    //     if the username contains invalid characters, return an error
+
+    // if the username contains invalid characters, return an error
     if (!containWordCharsOnly(username)){
         res.json({
             status: "error",
@@ -59,7 +60,7 @@ app.post("/register", (req, res) => {
         return;
     }
     
-    //     if username exists, return an error
+    // if username exists, return an error
     if (username in users){
         res.json({
             status: "error",
@@ -68,14 +69,14 @@ app.post("/register", (req, res) => {
     }
 
     //
-    // G. Adding the new user account
-    //    hash the password
+    // Adding the new user account
+    // hash the password
     const hash = bcrypt.hashSync(password, 10);
-    //    add the new user into the record
+    // add the new user into the record
     users[username] = { avatar, name, password: hash };
 
     //
-    // H. Saving the users.json file
+    // Saving the users.json file
     //
     fs.writeFileSync("data/users.json", JSON.stringify(users, null, " "));
 
@@ -93,13 +94,13 @@ app.post("/signin", (req, res) => {
     const { username, password } = req.body;
 
     //
-    // D. Reading the users.json file
-    //    read the user data
+    // Reading the users.json file
+    // read the user data
     const users = JSON.parse(fs.readFileSync("data/users.json"));
 
     //
-    // E. Checking for username/password
-    //    if username does not exist, return an error
+    // Checking for username/password
+    // if username does not exist, return an error
     if (!(username in users)){
         res.json({ 
             status: "error",
@@ -108,10 +109,10 @@ app.post("/signin", (req, res) => {
         return;
     }
 
-    //     get the user
+    // get the user
     const user = users[username];
 
-    //     if password is incorrect, return an error
+    // if password is incorrect, return an error
     if (!bcrypt.compareSync(password, user.password)){
         res.json({
             status: "error",
@@ -121,9 +122,8 @@ app.post("/signin", (req, res) => {
     }
 
     //
-    // G. Sending a success response with the user account
-    //
-    //    save the user information in the current session
+    // Sending a success response with the user account
+    // save the user information in the current session
     req.session.user = { username, avatar: user.avatar, name: user.name };
     res.json({ 
         status: "success",
@@ -135,8 +135,8 @@ app.post("/signin", (req, res) => {
 app.get("/validate", (req, res) => {
 
     //
-    // B. Getting req.session.user
-    //    if the user has not signed in, return an error
+    // Getting req.session.user
+    // if the user has not signed in, return an error
     if (!req.session.user){
         res.json({
             status: "error",
@@ -146,7 +146,7 @@ app.get("/validate", (req, res) => {
     }
 
     //
-    // D. Sending a success response with the user account
+    // Sending a success response with the user account
     //
     res.json({
         status: "success",
@@ -173,6 +173,7 @@ app.get("/signout", (req, res) => {
 });
 
 
+
 //
 // ***** Please insert your Lab 6 code here *****
 //
@@ -190,9 +191,9 @@ io.on("connection", (socket) => {
     if (socket.request.session.user){
         const { username, avatar, name } = socket.request.session.user;
         onlineUsers[username] = { avatar, name };
-        console.log(onlineUsers);
+        console.log("add to online users: "+ username);
 
-        // Broadcast the signed-in user
+        // Broadcast the signed-in user to browser
         io.emit("add user", JSON.stringify(socket.request.session.user));
     }
 
@@ -203,7 +204,7 @@ io.on("connection", (socket) => {
             const { username } = socket.request.session.user;
             if (onlineUsers[username])
                 delete onlineUsers[username];
-            console.log(onlineUsers);
+            console.log("remove from online users: "+ username);
 
             // Broadcast the signed-out user
             io.emit("remove user", JSON.stringify(socket.request.session.user));
@@ -244,10 +245,10 @@ io.on("connection", (socket) => {
 
 // Use the Socket.io Server 
 io.use((socket, next) => {
-    chatSession(socket.request, {}, next)
+    gameSession(socket.request, {}, next)
 });
 
 // Use a web server to listen at port 8000
 httpServer.listen(8000, () => {
-    console.log("The chat server has started...");
+    console.log("The game server has started...");
 });

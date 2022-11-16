@@ -6,7 +6,7 @@
     --field-background: white;
     --field-background-hover: #eee;
     --input-background: #eee;
-    --overlay-background: rgba(62, 61, 63, 0.8);
+    --overlay-background: rgba(44, 43, 45, 0.8);
     --overlay-caption-color: #eb4a40;
     --overlay-content-background: black;
 
@@ -236,6 +236,29 @@ button.icon:active {
 }
 
 /* Signin overlay */
+#information{
+    width: 1005px;
+    height: 187px;
+    background: black;
+    color: #881EE4;
+    position: fixed;
+    left: 5px; top: 100px;
+    padding: 23px;
+    line-height: 23px;
+}
+
+#login-instruction {
+    width: 1005px;
+    height: 100px;
+    background: black;
+    color: #881EE4;
+    position: fixed;
+    left: 5px;
+    padding: 23px;
+    line-height: 23px;
+    top: 680px;
+}
+
 #signin-form {
     width: 360px;
     height: 413px;

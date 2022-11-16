@@ -13,7 +13,7 @@ const Socket = (function() {
 
         // Wait for the socket to connect successfully
         socket.on("connect", () => {
-            // Get the online user list (emit: sending)
+            // Get the online user list (emit: browser sending request)
             socket.emit("get users");
 
             // Get the chatroom messages
@@ -21,11 +21,13 @@ const Socket = (function() {
         });
 
         // Set up the users event (on: receiving)
+        // get back the online user list from the server
         socket.on("users", (onlineUsers) => {
             onlineUsers = JSON.parse(onlineUsers);
-
+            
             // Show the online users
             OnlineUsersPanel.update(onlineUsers);
+            StartGame.checkPair(onlineUsers);
         });
 
         // Set up the add user event
@@ -34,6 +36,7 @@ const Socket = (function() {
 
             // Add the online user
             OnlineUsersPanel.addUser(user);
+            StartGame.newUser(user);
         });
 
         // Set up the remove user event

@@ -6,6 +6,8 @@ const SignInForm = (function() {
         
         // Hide it
         $("#signin-overlay").hide();
+        $("#information").hide();
+        $("#login-instruction").hide();
 
         // Submit event for the signin form
         $("#signin-form").on("submit", (e) => {
@@ -61,6 +63,8 @@ const SignInForm = (function() {
     // This function shows the form
     const show = function() {
         $("#signin-overlay").fadeIn(500);
+        $("#information").fadeIn(500);
+        $("#login-instruction").fadeIn(500);
     };
 
     // This function hides the form
@@ -69,6 +73,8 @@ const SignInForm = (function() {
         $("#signin-message").text("");
         $("#register-message").text("");
         $("#signin-overlay").fadeOut(500);
+        $("#information").fadeOut(500);
+        $("#login-instruction").fadeOut(500);
     };
 
     return { initialize, show, hide };
@@ -251,4 +257,40 @@ const UI = (function() {
     };
 
     return { getUserDisplay, initialize };
+})();
+
+const StartGame = (function() {
+    const checkPair = function(onlineUsers) {
+        
+        // Get the current user
+        const currentUser = Authentication.getUser();
+
+        console.log("Cheking on pairing.........");
+        if (Object.keys(onlineUsers).length == 2){
+            console.log(currentUser.username + " is pairing.........");
+        }
+
+        // Add the user one-by-one
+        for (const username in onlineUsers) {
+            if (username != currentUser.username) {
+                console.log(username + " is paired with you successfully.........");
+                GameMechanics.countdown();
+                break;
+            }
+        }
+    };
+
+    const newUser = function(user) {
+		
+        // Get the current user
+        const currentUser = Authentication.getUser();
+		
+		// Pair the user
+		if (user.username != currentUser.username) {
+            console.log(user.username + " is paired with you successfully.........");
+            GameMechanics.countdown();
+        }
+	};
+
+    return {checkPair, newUser};
 })();

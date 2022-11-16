@@ -4,6 +4,11 @@
   "name": "1",
   "password": "$2b$10$9JkoU0a3aOFYA1Ilw1h/YOgjv9Crbs6L.5uhEy2zvKUkHnu6OnZTy"
  },
+ "2": {
+  "avatar": "green",
+  "name": "2",
+  "password": "$2b$10$VtDzgYbPJYWcEvP2cBKkOu9BKF0b/F9t/8PmLNmWNwymaU5wQQgKS"
+ },
  "tony": {
   "avatar": "Owl",
   "name": "Tony Lee",
