@@ -294,3 +294,11 @@ const StartGame = (function() {
 
     return {checkPair, newUser};
 })();
+
+const Playground = (function() {
+    const update = function() {
+
+    };
+
+    return { update };
+})();

@@ -28,9 +28,17 @@ const GameMechanics = (function() {
         const skeleton1 = Skeleton(context, 50, 410);
         const skeleton2 = Skeleton(context, 800, 410);
         
-        console.log("---> "+Authentication.getUser());
+        console.log("---> "+Authentication.getUser().avatar);
+        
         //Create the player
-        const player = Player(context, 100, 430, gameArea); // The player on left
+        var player;
+        if (Authentication.getUser().avatar == "white"){
+            player = Player(context, 100, 430, gameArea);
+        }
+        else if (Authentication.getUser().avatar == "green"){
+            player = Player2(context, 100, 60, gameArea);
+        }
+        
         
         /* The main processing of the game */
         function doFrame(now) {
@@ -72,6 +80,7 @@ const GameMechanics = (function() {
             skeleton2.draw();
             player.draw();
 
+            console.log("player: "+JSON.stringify(player));
             /* Process the next frame */
             requestAnimationFrame(doFrame);
         }
