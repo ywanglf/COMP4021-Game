@@ -20,15 +20,15 @@ Further improvement if have time:
 ## :space_invader:	 Checklist
 ### Game front page
 * [ ] Game description and instructions
-* [ ] Player registration 
-* [ ] Player sign-in
+* [x] Player registration 
+* [x] Player sign-in
 * [ ] Player pair up
 ### Game play page
 * [ ] Things in the game
 * [ ] Players’ interaction
 * [ ] Game controls
 * [ ] Game duration
-* [ ] Cheat mode
+* [x] Cheat mode
 ### Game over page
 * [ ] Player statistics
 * [ ] Player ranking
