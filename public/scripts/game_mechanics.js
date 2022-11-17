@@ -1,5 +1,5 @@
 const GameMechanics = (function() {
-    let counting = 3;
+    let counting = 4;
     const begin = function() {
         // Start the game
         /* Get the canvas and 2D context */
@@ -19,24 +19,28 @@ const GameMechanics = (function() {
         let collectedGems = 0;      // The number of gems collected in the game
 
         /* Create the game area */
-        // canvas width & height: 854, 480;
+                                        //top, left, bottom, right
         const gameArea = BoundingBox(context, 50, 100, 430, 750);
 
         /* Create the sprites in the game */
 
-        // Private setting: ghost player being the 亡灵 of the skeleton lolll:P
+        // Create skeletons
         const skeleton1 = Skeleton(context, 50, 410);
         const skeleton2 = Skeleton(context, 800, 410);
         
-        console.log("---> "+Authentication.getUser().avatar);
+        // Create Obstacle
+        const obstacle = Obstacle(context, 100, 200);
         
-        //Create the player
+        // Create the player as according the user setting
         var player;
+        var gem;
         if (Authentication.getUser().avatar == "white"){
-            player = Player(context, 100, 430, gameArea);
+            player = Player(context, 100, 430, gameArea, obstacle);   // start from bottom left corner
+            gem = Gem(context, 750, 430, "green");           // The eneger core of the opponent
         }
         else if (Authentication.getUser().avatar == "green"){
-            player = Player2(context, 100, 60, gameArea);
+            player = Player2(context, 750, 430, gameArea);   // start from top right corner
+            gem = Gem(context, 100, 430, "purple");         // The eneger core of the opponent
         }
         
         
@@ -63,22 +67,35 @@ const GameMechanics = (function() {
             
 
             /* Update the sprites */
+            gem.update(now);
+            obstacle.update(now);
             skeleton1.update(now);
             skeleton2.update(now);
             player.update(now);
-
-
-            /* TODO */
-            /* Randomize the gem and collect the gem here */
             
+
+
+            
+            /* Collect the gem here */
+            const {x, y} = gem.getXY();
+            const box = player.getBoundingBox();
+            if (box.isPointInBox(x, y)){
+                // sounds.collect.play();
+                $("#game-over").show();
+                return;
+                // gem.randomize(gameArea);
+            }
 
             /* Clear the screen */
             context.clearRect(0, 0, cv.width, cv.height);
 
             /* Draw the sprites */
+            gem.draw();
+            obstacle.draw();
             skeleton1.draw();
             skeleton2.draw();
             player.draw();
+            
 
             console.log("player: "+JSON.stringify(player));
             /* Process the next frame */
@@ -92,8 +109,6 @@ const GameMechanics = (function() {
             // sounds.background.play();
             /* Handle the keydown of arrow keys and spacebar */
             $(document).on("keydown", function(event) {
-
-
                 
                 /* Handle the key down */
                 // console.log("Pressing key: "+event.keyCode);
@@ -128,6 +143,7 @@ const GameMechanics = (function() {
 
     };
 
+    // Countdown to start the game if pairing-up is down
     const countdown = function() {
         // Decrease the remaining time
         counting = counting - 1;

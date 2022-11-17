@@ -3,7 +3,7 @@
 // - `x` - The initial x position of the player
 // - `y` - The initial y position of the player
 // - `gameArea` - The bounding box of the game area
-const Player = function(ctx, x, y, gameArea) {
+const Player = function(ctx, x, y, gameArea, obstacle) {
 
     // This is the sprite sequences of the player facing different directions.
     // It contains the idling sprite sequences `idleLeft`, `idleUp`, `idleRight` and `idleDown`,
@@ -96,8 +96,18 @@ const Player = function(ctx, x, y, gameArea) {
             }
 
             /* Set the new position if it is within the game area */
-            if (gameArea.isPointInBox(x, y))
-                sprite.setXY(x, y);
+            if (gameArea.isPointInBox(x, y)){
+
+                // check whether it hits obstacle
+                // const {x, y} = obstacle.getXY();
+                const box = obstacle.getBoundingBox();
+                if (box.isPointInBox(x, y)){
+                    
+                }else 
+                    sprite.setXY(x, y);
+                
+            }
+               
         }
 
         /* Update the sprite object */
