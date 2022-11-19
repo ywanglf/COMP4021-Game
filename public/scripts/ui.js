@@ -296,9 +296,14 @@ const StartGame = (function() {
 })();
 
 const Playground = (function() {
-    const update = function() {
-
+    let obstacles;
+    const updateObstacles = function(updated) {
+        obstacles = updated;
     };
 
-    return { update };
+    const getObstacles = function() {
+        return obstacles;
+    };
+
+    return { updateObstacles, getObstacles };
 })();

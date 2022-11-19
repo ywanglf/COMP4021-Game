@@ -62,6 +62,13 @@ const Socket = (function() {
             // Add the message to the chatroom
             ChatPanel.addMessage(message);
         });
+
+        // Set up the obstacles event
+        socket.on("obstacles", (obstacles) => {
+            obstacles = JSON.parse(obstacles);
+            console.log(obstacles);
+            Playground.updateObstacles(obstacles);
+        });
     };
 
     // This function disconnects the socket from the server

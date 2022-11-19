@@ -3,7 +3,7 @@
 // - `x` - The initial x position of the player
 // - `y` - The initial y position of the player
 // - `gameArea` - The bounding box of the game area
-const Player = function(ctx, x, y, gameArea, obstacle) {
+const Player = function(ctx, x, y, gameArea, obstacles) {
 
     // This is the sprite sequences of the player facing different directions.
     // It contains the idling sprite sequences `idleLeft`, `idleUp`, `idleRight` and `idleDown`,
@@ -28,7 +28,8 @@ const Player = function(ctx, x, y, gameArea, obstacle) {
     // The sprite object is configured for the player sprite here.
     sprite.setSequence(sequences.idleDown)
           .setScale(1.5)
-          .setShadowScale({ x: 0.75, y: 0.20 })
+        //   .setShadowScale({ x: 0.75, y: 0.20 })
+            .setShadowScale({ x: 0, y: 0 })
           .useSheet("static/ghosts_sprite.png");
 
     // This is the moving direction, which can be a number from 0 to 4:
@@ -38,6 +39,9 @@ const Player = function(ctx, x, y, gameArea, obstacle) {
     // - `3` - moving to the right
     // - `4` - moving down
     let direction = 0;
+
+    // save the last direction (just in case the ghost stops)
+    let lastDirection = 0;
 
     // This is the moving speed (pixels per second) of the player
     let speed = 150;
@@ -53,6 +57,7 @@ const Player = function(ctx, x, y, gameArea, obstacle) {
                 case 4: sprite.setSequence(sequences.moveDown); break;
             }
             direction = dir;
+            lastDirection = dir;
         }
     };
 
@@ -80,6 +85,50 @@ const Player = function(ctx, x, y, gameArea, obstacle) {
         speed = 150;
     };
 
+    // This funtion lets player put an obstacle at current location if possible
+    const putObstacle = function(){
+        let { x, y } = sprite.getXY();
+        let newObstacle;
+        switch (lastDirection) {
+            case 1: {
+                // console.log("setting obstacle on the left");
+                newObstacle = Obstacle(ctx, x-48-1, y);
+                break;
+            }
+            case 2: {
+                // console.log("setting obstacle on the top");
+                newObstacle = Obstacle(ctx, x, y-1);
+                break;
+            }
+            case 3: {
+                // console.log("setting obstacle on the right");
+                newObstacle = Obstacle(ctx, x+48+1, y);
+                break;
+            }
+            case 4: {
+                // console.log("setting obstacle on the bottom");
+                newObstacle = Obstacle(ctx, x, y+48+1);
+                break;
+            }
+        }
+        var newBox = newObstacle.getBoundingBox();
+        // console.log("--> new Box: "+newBox.getTop()+"; "+newBox.getLeft()+"; "+newBox.getBottom()+"; "+newBox.getRight()+"; ");
+
+        let findIntersection = false;
+        for (let i = 0; i < obstacles.length; i++){
+            var box = obstacles[i].getBoundingBox();
+            // console.log("-->     Box: "+box.getTop()+"; "+box.getLeft()+"; "+box.getBottom()+"; "+box.getRight()+"; ");
+            if (box.intersect(newBox)){
+                // console.log("--> Intersecting!!!!!");
+                findIntersection = true;
+                break;
+            }
+        }
+        if (!findIntersection){
+            obstacles.push(newObstacle);
+        }
+    };
+
     // This function updates the player depending on his movement.
     // - `time` - The timestamp when this function is called
     const update = function(time) {
@@ -99,13 +148,20 @@ const Player = function(ctx, x, y, gameArea, obstacle) {
             if (gameArea.isPointInBox(x, y)){
 
                 // check whether it hits obstacle
-                // const {x, y} = obstacle.getXY();
-                const box = obstacle.getBoundingBox();
-                if (box.isPointInBox(x, y)){
-                    
-                }else 
+                let findObstacle = false;
+                for (let i = 0; i < obstacles.length; i++){
+                    var box = obstacles[i].getBoundingBox();
+                    console.log("Bounding Box: "+box.getLeft()+"; "+box.getRight()+"; "+box.getTop()+"; "+box.getBottom()+"; ");
+                    console.log("Player Location: "+x+"; "+y);
+                    if ((x >= box.getLeft() && x <= box.getRight() && y >= box.getTop() && y <= box.getBottom()) ||     // left bottom point
+                        ((x+46) >= box.getLeft() && (x+46) <= box.getRight() && y >= box.getTop() && y <= box.getBottom())){    // right bottom point
+                        findObstacle = true;
+                        break;
+                    }
+                }
+
+                if (!findObstacle)
                     sprite.setXY(x, y);
-                
             }
                
         }
@@ -122,6 +178,7 @@ const Player = function(ctx, x, y, gameArea, obstacle) {
         slowDown: slowDown,
         getBoundingBox: sprite.getBoundingBox,
         draw: sprite.draw,
+        putObstacle: putObstacle,
         update: update
     };
 };

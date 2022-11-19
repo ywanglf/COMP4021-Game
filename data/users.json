@@ -9,14 +9,9 @@
   "name": "2",
   "password": "$2b$10$VtDzgYbPJYWcEvP2cBKkOu9BKF0b/F9t/8PmLNmWNwymaU5wQQgKS"
  },
- "tony": {
-  "avatar": "Owl",
-  "name": "Tony Lee",
-  "password": "$2b$10$Yxb2fSgA5RFn9Oz9TxjLLuve/GiPXCs2DWVFhyFDr4qz39qglwp8e"
- },
- "may": {
-  "avatar": "Rabbit",
-  "name": "May Wong",
-  "password": "$2b$10$gLc3Ri9W6P650EKKbexw6uvirV8Bar7gmvAtMcoMiPiR3rsY50GVu"
+ "3": {
+  "avatar": "green",
+  "name": "3",
+  "password": "$2b$10$aFi8ZcGiC3jS3kcJ1BhOjeufABgcnu4QgQmjO0/gdHmkrr5PPF4ia"
  }
 }

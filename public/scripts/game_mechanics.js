@@ -28,14 +28,21 @@ const GameMechanics = (function() {
         const skeleton1 = Skeleton(context, 50, 410);
         const skeleton2 = Skeleton(context, 800, 410);
         
-        // Create Obstacle
-        const obstacle = Obstacle(context, 100, 200);
+        // Create Obstacle (Obstacle size: 48 x 48)
+        let temp = Playground.getObstacles();
+        let obstacles = [];
+        Object.keys(temp).forEach(function(index) {
+            let x = parseInt(temp[index]["x"]);
+            let y = parseInt(temp[index]["y"]);
+            obstacles.push(Obstacle(context, x, y));
+            console.log("0.0 "+temp[index]["x"]+"; "+temp[index]["y"]);
+        });
         
         // Create the player as according the user setting
         var player;
         var gem;
         if (Authentication.getUser().avatar == "white"){
-            player = Player(context, 100, 430, gameArea, obstacle);   // start from bottom left corner
+            player = Player(context, 100, 430, gameArea, obstacles);   // start from bottom left corner
             gem = Gem(context, 750, 430, "green");           // The eneger core of the opponent
         }
         else if (Authentication.getUser().avatar == "green"){
@@ -67,8 +74,11 @@ const GameMechanics = (function() {
             
 
             /* Update the sprites */
+            obstacles.forEach(function(obstacle) {
+                obstacle.update(now);
+            });
+            // obstacle.update(now);
             gem.update(now);
-            obstacle.update(now);
             skeleton1.update(now);
             skeleton2.update(now);
             player.update(now);
@@ -90,8 +100,11 @@ const GameMechanics = (function() {
             context.clearRect(0, 0, cv.width, cv.height);
 
             /* Draw the sprites */
+            obstacles.forEach(function(obstacle) {
+                obstacle.draw(now);
+            });
+            // obstacle.draw();
             gem.draw();
-            obstacle.draw();
             skeleton1.draw();
             skeleton2.draw();
             player.draw();
@@ -118,6 +131,9 @@ const GameMechanics = (function() {
                     case 39: player.move(3); break;
                     case 40: player.move(4); break;
                     case 32: player.speedUp(); break;
+
+                    //key 'Q'
+                    case 81: player.putObstacle(); break;
                 }
             });
 

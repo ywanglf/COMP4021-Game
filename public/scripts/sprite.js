@@ -96,10 +96,15 @@ const Sprite = function(ctx, x, y) {
         const size = getDisplaySize();
 
         /* Find the box coordinates */
-        const top = y - size.height / 2;
-        const left = x - size.width / 2;
-        const bottom = y + size.height / 2;
-        const right = x + size.width / 2;
+        // const top = y - size.height / 2;
+        // const left = x - size.width / 2;
+        // const bottom = y + size.height / 2;
+        // const right = x + size.width / 2;
+
+        const top = y - size.height;
+        const left = x;
+        const bottom = y;
+        const right = x + size.width;
 
         return BoundingBox(ctx, top, left, bottom, right);
     };

@@ -241,6 +241,12 @@ io.on("connection", (socket) => {
         const message = JSON.parse(fs.readFileSync("data/chatroom.json"));
         socket.emit("add message", JSON.stringify(json));
     });
+
+    // Set up the get obstacles event
+    socket.on("get messages", () => {
+        const obstacles = JSON.parse(fs.readFileSync("data/obstacles.json"));
+        io.emit("obstacles", JSON.stringify(obstacles));
+    });
 });
 
 // Use the Socket.io Server 
