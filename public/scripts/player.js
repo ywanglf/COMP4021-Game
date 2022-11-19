@@ -119,12 +119,12 @@ const Player = function(ctx, x, y, gameArea, obstacles) {
             var box = obstacles[i].getBoundingBox();
             // console.log("-->     Box: "+box.getTop()+"; "+box.getLeft()+"; "+box.getBottom()+"; "+box.getRight()+"; ");
             if (box.intersect(newBox)){
-                // console.log("--> Intersecting!!!!!");
                 findIntersection = true;
                 break;
             }
         }
         if (!findIntersection){
+            Socket.addObstacle(newObstacle.getXY());
             obstacles.push(newObstacle);
         }
     };
@@ -151,8 +151,8 @@ const Player = function(ctx, x, y, gameArea, obstacles) {
                 let findObstacle = false;
                 for (let i = 0; i < obstacles.length; i++){
                     var box = obstacles[i].getBoundingBox();
-                    console.log("Bounding Box: "+box.getLeft()+"; "+box.getRight()+"; "+box.getTop()+"; "+box.getBottom()+"; ");
-                    console.log("Player Location: "+x+"; "+y);
+                    // console.log("Bounding Box: "+box.getLeft()+"; "+box.getRight()+"; "+box.getTop()+"; "+box.getBottom()+"; ");
+                    // console.log("Player Location: "+x+"; "+y);
                     if ((x >= box.getLeft() && x <= box.getRight() && y >= box.getTop() && y <= box.getBottom()) ||     // left bottom point
                         ((x+46) >= box.getLeft() && (x+46) <= box.getRight() && y >= box.getTop() && y <= box.getBottom())){    // right bottom point
                         findObstacle = true;

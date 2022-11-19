@@ -18,6 +18,9 @@ const Socket = (function() {
 
             // Get the chatroom messages
             socket.emit("get messages");
+
+            // Get the obstacles
+            socket.emit("get obstacles");
         });
 
         // Set up the users event (on: receiving)
@@ -47,27 +50,16 @@ const Socket = (function() {
             OnlineUsersPanel.removeUser(user);
         });
 
-        // Set up the messages event
-        socket.on("messages", (chatroom) => {
-            chatroom = JSON.parse(chatroom);
-            console.log("messages: "+chatroom);
-            // Show the chatroom messages
-            ChatPanel.update(chatroom);
-        });
-
-        // Set up the add message event
-        socket.on("add message", (message) => {
-            message = JSON.parse(message);
-            console.log("add message: "+message);
-            // Add the message to the chatroom
-            ChatPanel.addMessage(message);
-        });
-
         // Set up the obstacles event
         socket.on("obstacles", (obstacles) => {
             obstacles = JSON.parse(obstacles);
             console.log(obstacles);
             Playground.updateObstacles(obstacles);
+        });
+
+        socket.on("add obstacle", (obstacle) => {
+            obstacle = JSON.parse(obstacle);
+
         });
     };
 
@@ -84,5 +76,13 @@ const Socket = (function() {
         }
     };
 
-    return { getSocket, connect, disconnect, postMessage };
+    // This function adds an obstacle evenr to the server
+    const addObstacle = function(newObstacle) {
+        if (socket && socket.connected) {
+            console.log("....1....");
+            socket.emit("post obstacle", newObstacle);
+        }
+    }
+
+    return { getSocket, connect, disconnect, postMessage, addObstacle };
 })();

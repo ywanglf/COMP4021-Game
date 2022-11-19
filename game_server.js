@@ -217,35 +217,29 @@ io.on("connection", (socket) => {
         socket.emit("users", JSON.stringify(onlineUsers));
     });
 
-    // Set up the get messages event
-    socket.on("get messages", () => {
-        // Send the chatroom messages to the browser
-        const messages = JSON.parse(fs.readFileSync("data/chatroom.json"));
-        socket.emit("messages", JSON.stringify(messages));
-    });
-
-    // Set up the post message event
-    socket.on("post message", (content) => {
-        const { username, avatar, name } = socket.request.session.user;
-        const json = {
-            user: { username, avatar, name },
-            datetime: new Date(),
-            content: content
-        }
-        console.log(json);
-        const messages = JSON.parse(fs.readFileSync("data/chatroom.json"));
-        messages.push(json);
-        fs.writeFileSync("data/chatroom.json", JSON.stringify(messages, null, " "));
-
-        // Broadcast the message
-        const message = JSON.parse(fs.readFileSync("data/chatroom.json"));
-        socket.emit("add message", JSON.stringify(json));
-    });
-
     // Set up the get obstacles event
-    socket.on("get messages", () => {
+    socket.on("get obstacles", () => {
         const obstacles = JSON.parse(fs.readFileSync("data/obstacles.json"));
         io.emit("obstacles", JSON.stringify(obstacles));
+    });
+
+    // Set up the add obstacles event
+    socket.on("post obstacle", obstacle => {
+        console.log("....2....");
+        // console.log("game server post obstacles: "+obstacle.x);,
+        let x = obstacle.x;
+        let y = obstacle.y;
+        const json = {
+            anyName: { x, y }
+        }
+        console.log("--> json: "+json);
+        const obstacles = JSON.parse(fs.readFileSync("data/obstacles.json"));
+        console.log(obstacles);
+        obstacles.push(json);
+        fs.writeFileSync("data/obstacles.json", JSON.stringify(obstacles, null, " "));
+        // Broadcast the message
+        io.emit("obstacles", JSON.stringify(obstacles));
+        socket.emit("add obstacle", JSON.stringify(obstacle));
     });
 });
 

@@ -22,6 +22,8 @@ const GameMechanics = (function() {
                                         //top, left, bottom, right
         const gameArea = BoundingBox(context, 50, 100, 430, 750);
 
+
+        
         /* Create the sprites in the game */
 
         // Create skeletons
@@ -31,13 +33,14 @@ const GameMechanics = (function() {
         // Create Obstacle (Obstacle size: 48 x 48)
         let temp = Playground.getObstacles();
         let obstacles = [];
-        Object.keys(temp).forEach(function(index) {
-            let x = parseInt(temp[index]["x"]);
-            let y = parseInt(temp[index]["y"]);
-            obstacles.push(Obstacle(context, x, y));
-            console.log("0.0 "+temp[index]["x"]+"; "+temp[index]["y"]);
-        });
-        
+        console.log("--> num obstacles: "+temp.length);
+
+        for (let i = 0; i < temp.length; i++){
+            // console.log("--> keyL "+Object.keys(temp));
+            // console.log("--> "+i+": "+temp[i]["anyName"]["x"]);
+            obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
+        }
+
         // Create the player as according the user setting
         var player;
         var gem;
@@ -74,6 +77,13 @@ const GameMechanics = (function() {
             
 
             /* Update the sprites */
+            temp = Playground.getObstacles();
+            obstacles = [];
+            console.log("--> num of obstacles updated: "+temp.length);
+            for (let i = 0; i < temp.length; i++){
+                // console.log("--> update: "+ temp[i]["anyName"]["x"]+"; "+ temp[i]["anyName"]["y"]);
+                obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
+            }
             obstacles.forEach(function(obstacle) {
                 obstacle.update(now);
             });
