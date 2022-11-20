@@ -33,7 +33,7 @@ const GameMechanics = (function() {
         // Create Obstacle (Obstacle size: 48 x 48)
         let temp = Playground.getObstacles();
         let obstacles = [];
-        console.log("--> num obstacles: "+temp.length);
+        // console.log("--> num obstacles: "+temp.length);
 
         for (let i = 0; i < temp.length; i++){
             // console.log("--> keyL "+Object.keys(temp));
@@ -49,7 +49,7 @@ const GameMechanics = (function() {
             gem = Gem(context, 750, 430, "green");           // The eneger core of the opponent
         }
         else if (Authentication.getUser().avatar == "green"){
-            player = Player2(context, 750, 430, gameArea);   // start from top right corner
+            player = Player2(context, 750, 430, gameArea, obstacles);   // start from top right corner
             gem = Gem(context, 100, 430, "purple");         // The eneger core of the opponent
         }
         
@@ -79,7 +79,7 @@ const GameMechanics = (function() {
             /* Update the sprites */
             temp = Playground.getObstacles();
             obstacles = [];
-            console.log("--> num of obstacles updated: "+temp.length);
+            // console.log("--> num of obstacles updated: "+temp.length);
             for (let i = 0; i < temp.length; i++){
                 // console.log("--> update: "+ temp[i]["anyName"]["x"]+"; "+ temp[i]["anyName"]["y"]);
                 obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
@@ -120,7 +120,7 @@ const GameMechanics = (function() {
             player.draw();
             
 
-            console.log("player: "+JSON.stringify(player));
+            // console.log("player: "+JSON.stringify(player));
             /* Process the next frame */
             requestAnimationFrame(doFrame);
         }
