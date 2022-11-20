@@ -151,8 +151,6 @@ const Player = function(ctx, x, y, gameArea, obstacles) {
                 let findObstacle = false;
                 for (let i = 0; i < obstacles.length; i++){
                     var box = obstacles[i].getBoundingBox();
-                    // console.log("Bounding Box: "+box.getLeft()+"; "+box.getRight()+"; "+box.getTop()+"; "+box.getBottom()+"; ");
-                    // console.log("Player Location: "+x+"; "+y);
                     if ((x >= box.getLeft() && x <= box.getRight() && y >= box.getTop() && y <= box.getBottom()) ||     // left bottom point
                         ((x+46) >= box.getLeft() && (x+46) <= box.getRight() && y >= box.getTop() && y <= box.getBottom())){    // right bottom point
                         findObstacle = true;
@@ -160,10 +158,11 @@ const Player = function(ctx, x, y, gameArea, obstacles) {
                     }
                 }
 
-                if (!findObstacle)
+                if (!findObstacle){
                     sprite.setXY(x, y);
+                    Socket.lastLocation(x, y);
+                }
             }
-               
         }
 
         /* Update the sprite object */
@@ -172,6 +171,7 @@ const Player = function(ctx, x, y, gameArea, obstacles) {
 
     // The methods are returned as an object here.
     return {
+        getXY: sprite.getXY,
         move: move,
         stop: stop,
         speedUp: speedUp,

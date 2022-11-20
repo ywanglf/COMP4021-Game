@@ -197,9 +197,6 @@ const ChatPanel = (function() {
             // Get the message content
             const content = $("#chat-input").val().trim();
 
-            // Post it
-            Socket.postMessage(content);
-
 			// Clear the message
             $("#chat-input").val("");
         });
@@ -302,6 +299,9 @@ const Playground = (function() {
     };
 
     const getObstacles = function() {
+        console.log("--> before: "+obstacles.length);
+        Socket.getObstacles();
+        console.log("--> after: "+obstacles.length);
         return obstacles;
     };
 

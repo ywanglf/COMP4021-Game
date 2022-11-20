@@ -119,7 +119,7 @@ const Player2 = function(ctx, x, y, gameArea, obstacles) {
         }
         if (!findIntersection){
             Socket.addObstacle(newObstacle.getXY());
-            obstacles.push(newObstacle);
+            // obstacles.push(newObstacle);
         }
     };
 
@@ -165,6 +165,7 @@ const Player2 = function(ctx, x, y, gameArea, obstacles) {
 
     // The methods are returned as an object here.
     return {
+        getXY: sprite.getXY,
         move: move,
         stop: stop,
         speedUp: speedUp,

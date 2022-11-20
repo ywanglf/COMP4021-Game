@@ -53,7 +53,7 @@ const Socket = (function() {
         // Set up the obstacles event
         socket.on("obstacles", (obstacles) => {
             obstacles = JSON.parse(obstacles);
-            console.log(obstacles);
+            // console.log(obstacles);
             Playground.updateObstacles(obstacles);
         });
 
@@ -69,13 +69,6 @@ const Socket = (function() {
         socket = null;
     };
 
-    // This function sends a post message event to the server
-    const postMessage = function(content) {
-        if (socket && socket.connected) {
-            socket.emit("post message", content);
-        }
-    };
-
     // This function adds an obstacle evenr to the server
     const addObstacle = function(newObstacle) {
         if (socket && socket.connected) {
@@ -84,5 +77,26 @@ const Socket = (function() {
         }
     }
 
-    return { getSocket, connect, disconnect, postMessage, addObstacle };
+    // This function obtains all obstacles event to the server
+    const getObstacles = function(){
+        if (socket && socket.connected) {
+            console.log("--- retrieving obstacles ---");
+            socket.emit("get obstacles");
+        }
+    }
+
+    // This function stores the new location of the player
+    const lastLocation = function(x, y) {
+        if (socket && socket.connected) {
+            socket.emit("change location", x, y);
+        }
+    }
+
+    const getLocation = function(x, y) {
+        if (socket && socket.connected) {
+            socket.emit("get location", x, y);
+        }
+    }
+
+    return { getSocket, connect, disconnect, postMessage, addObstacle, getObstacles, lastLocation, getLocation };
 })();

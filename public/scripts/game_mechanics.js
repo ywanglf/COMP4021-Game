@@ -91,7 +91,18 @@ const GameMechanics = (function() {
             gem.update(now);
             skeleton1.update(now);
             skeleton2.update(now);
+
+            // update the player
+            // const { m, n } = player.getXY();
+            // console.log("X Y position: "+m+"; "+n);
+            // if (Authentication.getUser().avatar == "white")
+            //     player = Player(context, m, n, obstacles);
+            // else if (Authentication.getUser().avatar == "green")
+            //     player = Player2(context, m, n, obstacles);
             player.update(now);
+            // const { o, p } = player.getXY();
+            // console.log("X Y position: "+o+"; "+p);
+            
             
 
 

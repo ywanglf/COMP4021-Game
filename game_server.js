@@ -241,6 +241,44 @@ io.on("connection", (socket) => {
         io.emit("obstacles", JSON.stringify(obstacles));
         socket.emit("add obstacle", JSON.stringify(obstacle));
     });
+
+    socket.on("change location", (x, y) => {
+        const { username } = socket.request.session.user;
+        const json = {
+            user: {username, x, y}
+        }
+        console.log("--> json: "+json["user"]["username"]);
+        console.log("--> server side: "+username+": "+x+", "+y);
+        const locations = JSON.parse(fs.readFileSync("data/location.json"));
+        if (locations[0]["user"]["username"] == username){
+            locations[0]["user"]["x"] = x;
+            locations[0]["user"]["y"] = y;
+            console.log("==> 1 matched");
+        }
+        else if (locations[1]["user"]["username"] == username) {
+            locations[1]["user"]["x"] = x;
+            locations[1]["user"]["y"] = y;
+            console.log("==> 2 matched");
+        }
+        fs.writeFileSync("data/location.json", JSON.stringify(locations, null, " "));
+    });
+
+    socket.on("get location", () => {
+        const { username } = socket.request.session.user;
+        const locations = JSON.parse(fs.readFileSync("data/location.json"));
+        let x;
+        let y;
+        if (locations[0]["user"]["username"] == username){
+            x = locations[0]["user"]["x"];
+            y = locations[0]["user"]["y"];
+        }
+        else if (locations[1]["user"]["username"] == username) {
+            x = locations[1]["user"]["x"];
+            y = locations[1]["user"]["y"];
+        }
+
+        io.emit("location", (x, y));
+    });
 });
 
 // Use the Socket.io Server 
