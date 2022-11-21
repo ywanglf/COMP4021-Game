@@ -323,5 +323,22 @@ const Playground = (function() {
         return {xLocation, yLocation};
     };
 
-    return { updateObstacles, getObstacles, initiateLocation, retrieveLocation, getLastLocation };
+    const initiateStatistics = function(username){
+        Socket.initiateStatistics(username);
+    };
+
+    const getStatistics = function(){
+
+    };
+
+    // when either user gets the gem
+    const updateGemStatistics = function(username) {
+        Socket.updateGemStatistics(username);
+    };
+
+    const updateNumObstacleSet = function() {
+        Socket.updateNumObstacleSet(Authentication.getUser().username);
+    };
+
+    return { updateObstacles, getObstacles, initiateLocation, retrieveLocation, getLastLocation, initiateStatistics, getStatistics, updateGemStatistics, updateNumObstacleSet };
 })();

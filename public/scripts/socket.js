@@ -77,7 +77,6 @@ const Socket = (function() {
     // This function adds an obstacle evenr to the server
     const addObstacle = function(newObstacle) {
         if (socket && socket.connected) {
-            // console.log("....1....");
             socket.emit("post obstacle", newObstacle);
         }
     }
@@ -85,14 +84,12 @@ const Socket = (function() {
     // This function obtains all obstacles event to the server
     const getObstacles = function(){
         if (socket && socket.connected) {
-            // console.log("--- retrieving obstacles ---");
             socket.emit("get obstacles");
         }
     }
 
     const inititatePlayerLocation = function(username, x, y){
         if (socket && socket.connected) {
-            // console.log("socket.js: "+username+"; "+x+"; "+y);
             socket.emit("initiate location", username, x, y);
         }
     };
@@ -102,13 +99,37 @@ const Socket = (function() {
         if (socket && socket.connected) {
             socket.emit("change location", x, y);
         }
-    }
+    };
 
     const getLocation = function(x, y) {
         if (socket && socket.connected) {
             socket.emit("get location", x, y);
         }
+    };
+
+    const initiateStatistics = function(username) {
+        if (socket && socket.connected) {
+            socket.emit("initiate statistics", username);
+        }
+    };
+
+    const updateGemStatistics = function(username) {
+        if (socket && socket.connected) {
+            socket.emit("update gem statistics", username);
+        }
+    };
+
+    const updateNumObstacleSet = function(username) {
+        if (socket && socket.connected) {
+            socket.emit("update num obstacles set statistics", username);
+        }
     }
 
-    return { getSocket, connect, disconnect, postMessage, addObstacle, getObstacles, inititatePlayerLocation, lastLocation, getLocation };
+    const updateNumObstacleBurnt = function(username) {
+        if (socket && socket.connected) {
+            socket.emit("update num obstacles burnt statistics", username);
+        }
+    }
+
+    return { getSocket, connect, disconnect, postMessage, addObstacle, getObstacles, inititatePlayerLocation, lastLocation, getLocation, initiateStatistics, updateGemStatistics, updateNumObstacleSet, updateNumObstacleBurnt };
 })();

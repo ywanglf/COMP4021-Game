@@ -124,6 +124,7 @@ const Player2 = function(ctx, x, y, gameArea) {
         }
         if (!findIntersection){
             Socket.addObstacle(newObstacle.getXY());
+            Playground.updateNumObstacleSet();
             // obstacles.push(newObstacle);
         }
     };

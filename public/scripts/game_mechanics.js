@@ -52,6 +52,7 @@ const GameMechanics = (function() {
             // Playground.initiateLocation(Authentication.getUser().username, 750, 430);   // initiate the location in json
         }
         // Playground.getLastLocation();
+        Playground.initiateStatistics(Authentication.getUser().username);
         console.log("enter doframe ....");
         
         
@@ -109,7 +110,11 @@ const GameMechanics = (function() {
             /* Collect the gem here */
             const {x, y} = gem.getXY();
             const box = player.getBoundingBox();
+            console.log(box);
             if (box.isPointInBox(x, y)){
+                // update the statistics of gem
+                Playground.updateGemStatistics(Authentication.getUser().username);
+
                 // sounds.collect.play();
                 $("#game-over").show();
                 return;

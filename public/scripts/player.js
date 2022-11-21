@@ -130,7 +130,8 @@ const Player = function(ctx, x, y, gameArea) {
         }
         if (!findIntersection){
             Socket.addObstacle(newObstacle.getXY());
-            obstacles.push(newObstacle);
+            Playground.updateNumObstacleSet();
+            // obstacles.push(newObstacle);
         }
     };
 

@@ -225,16 +225,16 @@ io.on("connection", (socket) => {
 
     // Set up the add obstacles event
     socket.on("post obstacle", obstacle => {
-        console.log("....2....");
+        // console.log("....2....");
         // console.log("game server post obstacles: "+obstacle.x);,
         let x = obstacle.x;
         let y = obstacle.y;
         const json = {
             anyName: { x, y }
         }
-        console.log("--> json: "+json);
+        // console.log("--> json: "+json);
         const obstacles = JSON.parse(fs.readFileSync("data/obstacles.json"));
-        console.log(obstacles);
+        // console.log(obstacles);
         obstacles.push(json);
         fs.writeFileSync("data/obstacles.json", JSON.stringify(obstacles, null, " "));
         // Broadcast the message
@@ -247,7 +247,7 @@ io.on("connection", (socket) => {
         const json = {
             user: {username, x, y}
         }
-        console.log(json);
+        // console.log(json);
         const locations = JSON.parse(fs.readFileSync("data/location.json"));
 
         // location info of the last game -> clear
@@ -286,8 +286,8 @@ io.on("connection", (socket) => {
         const { username } = socket.request.session.user;
         // console.log("-> username: "+username);
         const locations = JSON.parse(fs.readFileSync("data/location.json"));
-        console.log("-- get location --");
-        console.log(locations);
+        // console.log("-- get location --");
+        // console.log(locations);
         let x;
         let y;
         if (locations[0]["user"]["username"] == username){
@@ -301,6 +301,61 @@ io.on("connection", (socket) => {
         // console.log("x = "+x+"; y = "+y);
 
         socket.emit("location", {x, y});
+    });
+
+    // initiate the statistics.json
+    socket.on("initiate statistics", username => {
+        let numObstaclesSet = 0;
+        let numObstaclesBurnt = 0;
+        let gem = 0;
+        const json = {
+            user: {username, numObstaclesSet, numObstaclesBurnt, gem}
+        }
+        const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
+
+        // statistics info of the last game -> clear
+        if (statistics.length == 2){
+            statistics.pop();
+            statistics.pop();
+        }
+        statistics.push(json);
+        fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
+    });
+
+    // update gem statistics in statistics.json
+    socket.on("update gem statistics", username => {
+        const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
+        if (statistics[0]["user"]["username"] == username) {
+            statistics[0]["user"]["gem"] = 1;
+        } 
+        else if (statistics[1]["user"]["username"] == username) {
+            statistics[1]["user"]["gem"] = 1;
+        }
+        fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
+    });
+
+    // update number of obstacles set by each user
+    socket.on("update num obstacles set statistics", username => {
+        const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
+        if (statistics[0]["user"]["username"] == username) {
+            statistics[0]["user"]["numObstaclesSet"] += 1;
+        } 
+        else if (statistics[1]["user"]["username"] == username) {
+            statistics[1]["user"]["numObstaclesSet"] += 1;
+        }
+        fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
+    });
+
+    // update number of obstacles burnt by each user
+    socket.on("update num obstacles burnt statistics", username => {
+        const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
+        if (statistics[0]["user"]["username"] == username) {
+            statistics[0]["user"]["numObstaclesBurnt"] += 1;
+        } 
+        else if (statistics[1]["user"]["username"] == username) {
+            statistics[1]["user"]["numObstaclesBurnt"] += 1;
+        }
+        fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
     });
 });
 
