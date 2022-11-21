@@ -33,11 +33,8 @@ const GameMechanics = (function() {
         // Create Obstacle (Obstacle size: 48 x 48)
         let temp = Playground.getObstacles();
         let obstacles = [];
-        // console.log("--> num obstacles: "+temp.length);
 
         for (let i = 0; i < temp.length; i++){
-            // console.log("--> keyL "+Object.keys(temp));
-            // console.log("--> "+i+": "+temp[i]["anyName"]["x"]);
             obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
         }
 
@@ -45,13 +42,17 @@ const GameMechanics = (function() {
         var player;
         var gem;
         if (Authentication.getUser().avatar == "white"){
-            player = Player(context, 100, 430, gameArea, obstacles);   // start from bottom left corner
+            player = Player(context, 100, 430, gameArea);   // start from bottom left corner
             gem = Gem(context, 750, 430, "green");           // The eneger core of the opponent
+            // Playground.initiateLocation(Authentication.getUser().username, 100, 430);   // inititate the location in json
         }
         else if (Authentication.getUser().avatar == "green"){
-            player = Player2(context, 750, 430, gameArea, obstacles);   // start from top right corner
+            player = Player2(context, 750, 430, gameArea);   // start from top right corner
             gem = Gem(context, 100, 430, "purple");         // The eneger core of the opponent
+            // Playground.initiateLocation(Authentication.getUser().username, 750, 430);   // initiate the location in json
         }
+        // Playground.getLastLocation();
+        console.log("enter doframe ....");
         
         
         /* The main processing of the game */
@@ -79,9 +80,7 @@ const GameMechanics = (function() {
             /* Update the sprites */
             temp = Playground.getObstacles();
             obstacles = [];
-            // console.log("--> num of obstacles updated: "+temp.length);
             for (let i = 0; i < temp.length; i++){
-                // console.log("--> update: "+ temp[i]["anyName"]["x"]+"; "+ temp[i]["anyName"]["y"]);
                 obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
             }
             obstacles.forEach(function(obstacle) {
@@ -92,16 +91,16 @@ const GameMechanics = (function() {
             skeleton1.update(now);
             skeleton2.update(now);
 
-            // update the player
-            // const { m, n } = player.getXY();
-            // console.log("X Y position: "+m+"; "+n);
-            // if (Authentication.getUser().avatar == "white")
-            //     player = Player(context, m, n, obstacles);
-            // else if (Authentication.getUser().avatar == "green")
-            //     player = Player2(context, m, n, obstacles);
+            // let {xLocation, yLocation} = Playground.getLastLocation();
+            // console.log("--> Get Player: "+xLocation+": "+yLocation);
+            // if (xLocation != undefined && yLocation != undefined){
+            //     if (Authentication.getUser().avatar == "white")
+            //         player = Player(context, xLocation, yLocation, obstacles);
+            //     else if (Authentication.getUser().avatar == "green")
+            //         player = Player2(context, xLocation, yLocation, obstacles);
+            // }
+            
             player.update(now);
-            // const { o, p } = player.getXY();
-            // console.log("X Y position: "+o+"; "+p);
             
             
 

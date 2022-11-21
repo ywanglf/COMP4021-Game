@@ -242,30 +242,52 @@ io.on("connection", (socket) => {
         socket.emit("add obstacle", JSON.stringify(obstacle));
     });
 
+    // initiate the username, x, y locations in the location.json
+    socket.on("initiate location", (username, x, y) => {
+        const json = {
+            user: {username, x, y}
+        }
+        console.log(json);
+        const locations = JSON.parse(fs.readFileSync("data/location.json"));
+
+        // location info of the last game -> clear
+        if (locations.length == 2){
+            locations.pop();
+            locations.pop();
+        }
+        locations.push(json);
+        fs.writeFileSync("data/location.json", JSON.stringify(locations, null, " "));
+    });
+
+    // update the x, y locations of the player in the location.json
     socket.on("change location", (x, y) => {
         const { username } = socket.request.session.user;
         const json = {
             user: {username, x, y}
         }
-        console.log("--> json: "+json["user"]["username"]);
-        console.log("--> server side: "+username+": "+x+", "+y);
+        // console.log("--> json: "+json["user"]["username"]);
+        // console.log("--> server side: "+username+": "+x+", "+y);
         const locations = JSON.parse(fs.readFileSync("data/location.json"));
         if (locations[0]["user"]["username"] == username){
             locations[0]["user"]["x"] = x;
             locations[0]["user"]["y"] = y;
-            console.log("==> 1 matched");
+            // console.log("==> 1 matched");
         }
         else if (locations[1]["user"]["username"] == username) {
             locations[1]["user"]["x"] = x;
             locations[1]["user"]["y"] = y;
-            console.log("==> 2 matched");
+            // console.log("==> 2 matched");
         }
         fs.writeFileSync("data/location.json", JSON.stringify(locations, null, " "));
     });
 
+    // retrieve the most updated x, y locations of the player
     socket.on("get location", () => {
         const { username } = socket.request.session.user;
+        // console.log("-> username: "+username);
         const locations = JSON.parse(fs.readFileSync("data/location.json"));
+        console.log("-- get location --");
+        console.log(locations);
         let x;
         let y;
         if (locations[0]["user"]["username"] == username){
@@ -276,8 +298,9 @@ io.on("connection", (socket) => {
             x = locations[1]["user"]["x"];
             y = locations[1]["user"]["y"];
         }
+        // console.log("x = "+x+"; y = "+y);
 
-        io.emit("location", (x, y));
+        socket.emit("location", {x, y});
     });
 });
 

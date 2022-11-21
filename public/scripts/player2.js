@@ -3,7 +3,7 @@
 // - `x` - The initial x position of the player
 // - `y` - The initial y position of the player
 // - `gameArea` - The bounding box of the game area
-const Player2 = function(ctx, x, y, gameArea, obstacles) {
+const Player2 = function(ctx, x, y, gameArea) {
 
     // This is the sprite sequences of the player facing different directions.
     // It contains the idling sprite sequences `idleLeft`, `idleUp`, `idleRight` and `idleDown`,
@@ -81,6 +81,11 @@ const Player2 = function(ctx, x, y, gameArea, obstacles) {
 
     // This funtion lets player put an obstacle at current location if possible
     const putObstacle = function(){
+        let obstacles = [];
+        let temp = Playground.getObstacles();
+        for (let i = 0; i < temp.length; i++){
+            obstacles.push(Obstacle(ctx, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
+        }
         let { x, y } = sprite.getXY();
         let newObstacle;
         switch (lastDirection) {
@@ -126,6 +131,11 @@ const Player2 = function(ctx, x, y, gameArea, obstacles) {
     // This function updates the player depending on his movement.
     // - `time` - The timestamp when this function is called
     const update = function(time) {
+        let obstacles = [];
+        let temp = Playground.getObstacles();
+        for (let i = 0; i < temp.length; i++){
+            obstacles.push(Obstacle(ctx, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
+        }
         /* Update the player if the player is moving */
         if (direction != 0) {
             let { x, y } = sprite.getXY();

@@ -293,17 +293,35 @@ const StartGame = (function() {
 })();
 
 const Playground = (function() {
+    let xLocation;
+    let yLocation;
     let obstacles;
     const updateObstacles = function(updated) {
         obstacles = updated;
     };
 
     const getObstacles = function() {
-        console.log("--> before: "+obstacles.length);
+        // console.log("--> before: "+obstacles.length);
         Socket.getObstacles();
-        console.log("--> after: "+obstacles.length);
+        // console.log("--> after: "+obstacles.length);
         return obstacles;
     };
 
-    return { updateObstacles, getObstacles };
+    const initiateLocation = function(username, x, y) {
+        console.log("-> usr: "+username+"; x: "+x+"; y: " + y);
+        Socket.inititatePlayerLocation(username, x, y);
+    };
+
+    const retrieveLocation = function(json) {
+        xLocation = json["x"];
+        yLocation = json["y"];
+    };
+
+    const getLastLocation = function() {
+        Socket.getLocation();
+        console.log("Playground: "+xLocation+", "+yLocation);
+        return {xLocation, yLocation};
+    };
+
+    return { updateObstacles, getObstacles, initiateLocation, retrieveLocation, getLastLocation };
 })();

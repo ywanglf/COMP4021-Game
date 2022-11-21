@@ -61,6 +61,11 @@ const Socket = (function() {
             obstacle = JSON.parse(obstacle);
 
         });
+
+        socket.on("location", (json) => {
+            console.log("location; x = "+json["x"]+"; y = "+json["y"]);
+            Playground.retrieveLocation(json);
+        });
     };
 
     // This function disconnects the socket from the server
@@ -72,7 +77,7 @@ const Socket = (function() {
     // This function adds an obstacle evenr to the server
     const addObstacle = function(newObstacle) {
         if (socket && socket.connected) {
-            console.log("....1....");
+            // console.log("....1....");
             socket.emit("post obstacle", newObstacle);
         }
     }
@@ -80,10 +85,17 @@ const Socket = (function() {
     // This function obtains all obstacles event to the server
     const getObstacles = function(){
         if (socket && socket.connected) {
-            console.log("--- retrieving obstacles ---");
+            // console.log("--- retrieving obstacles ---");
             socket.emit("get obstacles");
         }
     }
+
+    const inititatePlayerLocation = function(username, x, y){
+        if (socket && socket.connected) {
+            // console.log("socket.js: "+username+"; "+x+"; "+y);
+            socket.emit("initiate location", username, x, y);
+        }
+    };
 
     // This function stores the new location of the player
     const lastLocation = function(x, y) {
@@ -98,5 +110,5 @@ const Socket = (function() {
         }
     }
 
-    return { getSocket, connect, disconnect, postMessage, addObstacle, getObstacles, lastLocation, getLocation };
+    return { getSocket, connect, disconnect, postMessage, addObstacle, getObstacles, inititatePlayerLocation, lastLocation, getLocation };
 })();
