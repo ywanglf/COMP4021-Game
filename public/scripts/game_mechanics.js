@@ -110,7 +110,6 @@ const GameMechanics = (function() {
             /* Collect the gem here */
             const {x, y} = gem.getXY();
             const box = player.getBoundingBox();
-            console.log(box);
             if (box.isPointInBox(x, y)){
                 // update the statistics of gem
                 Playground.updateGemStatistics(Authentication.getUser().username);
