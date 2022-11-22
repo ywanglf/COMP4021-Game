@@ -66,6 +66,11 @@ const Socket = (function() {
             console.log("location; x = "+json["x"]+"; y = "+json["y"]);
             Playground.retrieveLocation(json);
         });
+
+        // retrieve the statistics
+        socket.on("statistics", (statistics) => {
+            Playground.retrieveStatistics(statistics);
+        });
     };
 
     // This function disconnects the socket from the server
@@ -79,14 +84,14 @@ const Socket = (function() {
         if (socket && socket.connected) {
             socket.emit("post obstacle", newObstacle);
         }
-    }
+    };
 
     // This function obtains all obstacles event to the server
     const getObstacles = function(){
         if (socket && socket.connected) {
             socket.emit("get obstacles");
         }
-    }
+    };
 
     const inititatePlayerLocation = function(username, x, y){
         if (socket && socket.connected) {
@@ -113,6 +118,13 @@ const Socket = (function() {
         }
     };
 
+    // reqeust the stat from server
+    const getStatistics = function() {
+        if (socket && socket.connected) {
+            socket.emit("get statistics");
+        }
+    };
+
     const updateGemStatistics = function(username) {
         if (socket && socket.connected) {
             socket.emit("update gem statistics", username);
@@ -131,5 +143,9 @@ const Socket = (function() {
         }
     }
 
-    return { getSocket, connect, disconnect, postMessage, addObstacle, getObstacles, inititatePlayerLocation, lastLocation, getLocation, initiateStatistics, updateGemStatistics, updateNumObstacleSet, updateNumObstacleBurnt };
+    return { getSocket, connect, disconnect, postMessage, 
+        addObstacle, getObstacles, 
+        inititatePlayerLocation, lastLocation, getLocation, 
+        initiateStatistics, getStatistics, 
+        updateGemStatistics, updateNumObstacleSet, updateNumObstacleBurnt };
 })();

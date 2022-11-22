@@ -322,6 +322,12 @@ io.on("connection", (socket) => {
         fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
     });
 
+    // send back the statistics to socket
+    socket.on("get statistics", () => {
+        const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
+        socket.emit("statistics", statistics);
+    });
+
     // update gem statistics in statistics.json
     socket.on("update gem statistics", username => {
         const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));

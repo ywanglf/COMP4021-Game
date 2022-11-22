@@ -293,6 +293,7 @@ const StartGame = (function() {
 })();
 
 const Playground = (function() {
+    let statistics;
     let xLocation;
     let yLocation;
     let obstacles;
@@ -327,8 +328,20 @@ const Playground = (function() {
         Socket.initiateStatistics(username);
     };
 
-    const getStatistics = function(){
+    // retrieve the stat from socket
+    const retrieveStatistics = function(json) {
+        statistics = json;
+    };
 
+    const gemIsCollected = function(){
+        Socket.getStatistics();
+        if (statistics == undefined) return false;
+
+        if (statistics[0]["user"]["gem"] == 1 || statistics[1]["user"]["gem"] == 1){
+            return true;
+        } else {
+            return false;
+        }
     };
 
     // when either user gets the gem
@@ -340,5 +353,8 @@ const Playground = (function() {
         Socket.updateNumObstacleSet(Authentication.getUser().username);
     };
 
-    return { updateObstacles, getObstacles, initiateLocation, retrieveLocation, getLastLocation, initiateStatistics, getStatistics, updateGemStatistics, updateNumObstacleSet };
+    return { updateObstacles, getObstacles, 
+        initiateLocation, retrieveLocation, getLastLocation, 
+        initiateStatistics, retrieveStatistics, gemIsCollected,
+        updateGemStatistics, updateNumObstacleSet };
 })();

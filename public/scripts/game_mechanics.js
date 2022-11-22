@@ -68,6 +68,11 @@ const GameMechanics = (function() {
 
 
             /* Handle the game over situation here */
+            if (Playground.gemIsCollected()){
+                $("#game-over").show();
+                return;
+            }
+
             if (timeRemaining == 0) {
                 sounds.background.pause();
                 // sounds.collect.pause();
@@ -91,7 +96,7 @@ const GameMechanics = (function() {
             gem.update(now);
             skeleton1.update(now);
             skeleton2.update(now);
-
+            player.update(now);
             // let {xLocation, yLocation} = Playground.getLastLocation();
             // console.log("--> Get Player: "+xLocation+": "+yLocation);
             // if (xLocation != undefined && yLocation != undefined){
@@ -101,23 +106,19 @@ const GameMechanics = (function() {
             //         player = Player2(context, xLocation, yLocation, obstacles);
             // }
             
-            player.update(now);
             
             
-
-
             
             /* Collect the gem here */
-            const {x, y} = gem.getXY();
+            const targetBox = gem.getBoundingBox();
             const box = player.getBoundingBox();
-            if (box.isPointInBox(x, y)){
-                // update the statistics of gem
-                Playground.updateGemStatistics(Authentication.getUser().username);
 
+            // the first player reaching the gem
+            if (box.intersect(targetBox)){
                 // sounds.collect.play();
+                Playground.updateGemStatistics(Authentication.getUser().username);  // update gem stat to 1
                 $("#game-over").show();
                 return;
-                // gem.randomize(gameArea);
             }
 
             /* Clear the screen */
