@@ -66,12 +66,22 @@ const GameMechanics = (function() {
             const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
             $("#time-remaining").text(timeRemaining);
 
+            /* Collect the gem here */
+            const targetBox = gem.getBoundingBox();
+            const box = player.getBoundingBox();
 
-            /* Handle the game over situation here */
-            if (Playground.gemIsCollected()){
-                $("#game-over").show();
-                return;
+            // the first player reaching the gem
+            if (box.intersect(targetBox)){
+                // sounds.collect.play();
+                Playground.updateGemStatistics(Authentication.getUser().username);  // update gem stat to 1
+                // $("#game-over").show();
+                // return;
             }
+            /* Handle the game over situation here */
+            // if (Playground.gemIsCollected()){
+            //     $("#game-over").show();
+            //     return;
+            // }
 
             if (timeRemaining == 0) {
                 sounds.background.pause();
@@ -109,17 +119,7 @@ const GameMechanics = (function() {
             
             
             
-            /* Collect the gem here */
-            const targetBox = gem.getBoundingBox();
-            const box = player.getBoundingBox();
-
-            // the first player reaching the gem
-            if (box.intersect(targetBox)){
-                // sounds.collect.play();
-                Playground.updateGemStatistics(Authentication.getUser().username);  // update gem stat to 1
-                $("#game-over").show();
-                return;
-            }
+            
 
             /* Clear the screen */
             context.clearRect(0, 0, cv.width, cv.height);
