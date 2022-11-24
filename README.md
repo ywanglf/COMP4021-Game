@@ -25,14 +25,14 @@ Further improvement if have time:
 * [x] Player pair up
 ### Game play page
 * [ ] Things in the game
-* [ ] Players’ interaction
+* [x] Players’ interaction
 * [ ] Game controls
 * [ ] Game duration
 * [x] Cheat mode
 ### Game over page
-* [ ] Player statistics
-* [ ] Player ranking
-* [ ] Restart the game/ back to front page
+* [x] Player statistics
+* [x] Player ranking
+* [x] Restart the game/ back to front page
 ### Others
 * [ ] Graphic and sounds
 * [ ] Project video

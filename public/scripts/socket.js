@@ -31,6 +31,7 @@ const Socket = (function() {
             // Show the online users
             OnlineUsersPanel.update(onlineUsers);
             StartGame.checkPair(onlineUsers);
+            StartGame.setLocation(onlineUsers);
         });
 
         // Set up the add user event
@@ -41,6 +42,10 @@ const Socket = (function() {
             OnlineUsersPanel.addUser(user);
             StartGame.newUser(user);
         });
+
+        // socket.on("count", (numOnlineUsers) => {
+        //     Playground.retrieveNumOnlineUsers(numOnlineUsers);
+        // });
 
         // Set up the remove user event
         socket.on("remove user", (user) => {
@@ -78,6 +83,12 @@ const Socket = (function() {
         socket.disconnect();
         socket = null;
     };
+
+    // const countUsers = function() {
+    //     if (socket && socket.connected) {
+    //         socket.emit("count users");
+    //     }
+    // };
 
     // This function adds an obstacle evenr to the server
     const addObstacle = function(newObstacle) {

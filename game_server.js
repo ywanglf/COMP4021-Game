@@ -205,6 +205,9 @@ io.on("connection", (socket) => {
             if (onlineUsers[username])
                 delete onlineUsers[username];
             console.log("remove from online users: "+ username);
+            
+            // delete statistics
+            
 
             // Broadcast the signed-out user
             io.emit("remove user", JSON.stringify(socket.request.session.user));
@@ -325,7 +328,7 @@ io.on("connection", (socket) => {
     // send back the statistics to socket
     socket.on("get statistics", () => {
         const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
-        socket.emit("statistics", statistics);
+        io.emit("statistics", statistics);
     });
 
     // update gem statistics in statistics.json

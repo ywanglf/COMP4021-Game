@@ -50,9 +50,7 @@
                     <linearGradient id="title-fill" x1="0" y1="0" x2="0" y2="1">
                         <!-- Halloween color -->
                         <stop offset="0.2" stop-color="#F75F1C" />
-                        <!-- <stop offset="0.4" stop-color="#FF9A00" /> -->
                         <stop offset="0.6" stop-color="#881EE4" />
-                        <!-- <stop offset="0.8" stop-color="#85E21F" /> -->
                     </linearGradient>
                 </defs>
                 <text id="game-title" x="50%" y="45%">..Pairing Up..</text>
@@ -62,17 +60,31 @@
             <svg xmlns="http://www.w3.org/2000/svg" id="game-over" style="display: none">
                 <defs>
                     <linearGradient id="game-over-fill" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0" stop-color="red" />
-                        <stop offset="0.5" stop-color="yellow" />
-                        <stop offset="1" stop-color="red" />
+                        <stop offset="0.3" stop-color="black" />
+                        <stop offset="0.7" stop-color="black" />
                     </linearGradient>
                 </defs>
-                <text x="50%" y="50%">
-                    Time's up! TODO: Give a rank
+                <!-- <text x="50%" y="50%">
+                    GAME OVER
                     <tspan id="final-gems">0</tspan>
                     gem(s).
-                </text>
+                </text>  -->
+                <text id="game-over-title" x="50%" y="20%">YOU LOSE</text>
+                <text id="game-over-rank" x="50%" y="30%">Ranking</text>
+                <text id="game-over-rank1" x="50%" y="38%"> </text>
+                <text id="game-over-rank2" x="50%" y="46%"> </text>
+                <text id="game-over-subtitle" x="50%" y="58%">Statistics</text>
+                <text id="game-over-player1" x="30%" y="64%"></text>
+                <text id="game-over-player2" x="70%" y="64%"></text>
+                <text id="game-over-gem1" x="30%" y="72%"></text>
+                <text id="game-over-gem2" x="70%" y="72%"></text>
+                <text id="game-over-set1" x="30%" y="78%"></text>
+                <text id="game-over-set2" x="70%" y="78%"></text>
+                <text id="game-over-destroy1" x="30%" y="84%"></text>
+                <text id="game-over-destroy2" x="70%" y="84%"></text>
+                <text id="back-to-login" x="50%" y="100%">Click To Return To Login Page</text>
             </svg>
+
         </div>
 
         <div id="instruction">
@@ -130,7 +142,7 @@
     </div>
     <div id="login-instruction">
         Press left, right, up and down to move the ghost. <br>
-        Press key ___ to place obstacles. <br>
+        Press key Q to place obstacles. <br>
         Press key ___ to destroy obstacles. 
     </div>
     

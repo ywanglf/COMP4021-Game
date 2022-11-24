@@ -240,7 +240,7 @@ button.icon:active {
     width: 1005px;
     height: 187px;
     background: black;
-    color: #881EE4;
+    color: #b872f5;
     position: fixed;
     left: 5px; top: 100px;
     padding: 23px;
@@ -251,7 +251,7 @@ button.icon:active {
     width: 1005px;
     height: 100px;
     background: black;
-    color: #881EE4;
+    color: #af6ee8;
     position: fixed;
     left: 5px;
     padding: 23px;
@@ -348,8 +348,48 @@ canvas {
     fill: url(#title-fill);
     stroke: black;
 }
+
 #game-over text {
-    font-size: 120%;
-    fill: url(#game-over-fill);
+    color: white;
     text-anchor: middle;
+}
+
+#game-over #game-over-title {
+    font-size: 460%;
+    color: black;
+    stroke: #32eefb;
+    stroke-width: 3px;
+}
+
+#game-over #game-over-rank {
+    font-size: 150%;
+    fill: #85E21F;;
+}
+
+#game-over-rank1, #game-over-rank2 {
+    font-size: 130%;
+    fill: white;
+}
+
+#game-over #game-over-subtitle {
+    font-size: 150%;
+    fill: #85E21F;;
+}
+
+#game-over-player1, #game-over-player2{
+    font-size: 120%;
+    fill: white;
+}
+
+#game-over-gem1, #game-over-gem2, #game-over-set1, #game-over-set2, #game-over-destroy1, #game-over-destroy2 {
+    text-anchor: start;
+    font-size: 120%;
+    fill: white;
+}
+
+
+
+#back-to-login {
+    font-size: 100%;
+    fill: #32eefb;;
 }

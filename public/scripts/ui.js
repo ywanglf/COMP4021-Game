@@ -58,6 +58,11 @@ const SignInForm = (function() {
                 (error) => { $("#register-message").text(error); }
             );
         });
+
+        // click to go back to front page
+        $("#game-over").on("click", () => {
+            $("#signout-button").click();
+        });
     };
 
     // This function shows the form
@@ -257,6 +262,9 @@ const UI = (function() {
 })();
 
 const StartGame = (function() {
+    let playerX, playerY;
+    let gemX, gemY;
+
     const checkPair = function(onlineUsers) {
         
         // Get the current user
@@ -289,7 +297,28 @@ const StartGame = (function() {
         }
 	};
 
-    return {checkPair, newUser};
+    const setLocation = function(onlineUsers) {
+        if (Object.keys(onlineUsers).length == 1) {
+            playerX = 100;
+            playerY = 430;
+            gemX = 750;
+            gemY = 430;
+            console.log("set Player 1 Location");
+        }
+        else if (Object.keys(onlineUsers).length == 2) {
+            playerX = 750;
+            playerY = 430;
+            gemX = 100;
+            gemY = 430;
+            console.log("set Player 2 Location");
+        }
+    }
+
+    const retrieveLocation = function() {
+        return {playerX, playerY, gemX, gemY};
+    }
+
+    return {checkPair, newUser, setLocation, retrieveLocation};
 })();
 
 const Playground = (function() {
@@ -297,6 +326,7 @@ const Playground = (function() {
     let xLocation;
     let yLocation;
     let obstacles;
+    
     const updateObstacles = function(updated) {
         obstacles = updated;
     };
@@ -333,13 +363,45 @@ const Playground = (function() {
         statistics = json;
     };
 
-    const gemIsCollected = function(){
+    // check whether either player has achieved winning condition
+    const gemIsCollected = function() {
         Socket.getStatistics();
-        if (statistics == undefined) return false;
+        if (statistics == undefined || statistics.length == 1) return false;
 
+        let username = Authentication.getUser().username;
+        let opponentName;
+        if (statistics[0]["user"]["username"] == username){
+            opponentName = statistics[1]["user"]["username"];
+        } else {
+            opponentName = statistics[0]["user"]["username"];
+        }
         if (statistics[0]["user"]["gem"] == 1 || statistics[1]["user"]["gem"] == 1){
+            // setting for the winner player 
+            if ((statistics[0]["user"]["gem"] == 1 && statistics[0]["user"]["username"] == username) ||
+                (statistics[1]["user"]["gem"] == 1 && statistics[1]["user"]["username"] == username)){
+                $("#game-over-title").text("YOU WIN!");
+                $("#game-over-rank1").text("1. " + username);
+                $("#game-over-rank2").text("2. " + opponentName);
+            } 
+            // setting for the loser player
+            else {
+                $("#game-over-rank1").text("1. " + opponentName);
+                $("#game-over-rank2").text("2. " + username);
+            }
+            // setting for statistics
+            $("#game-over-player1").text("Player "+statistics[0]["user"]["username"]);
+            $("#game-over-player2").text("Player "+statistics[1]["user"]["username"]);
+            $("#game-over-gem1").text("Energy Core: "+statistics[0]["user"]["gem"]);
+            $("#game-over-gem2").text("Energy Core: "+statistics[1]["user"]["gem"]);
+            $("#game-over-set1").text("Obstacles Set: "+statistics[0]["user"]["numObstaclesSet"]);
+            $("#game-over-set2").text("Obstacles Set: "+statistics[1]["user"]["numObstaclesSet"]);
+            $("#game-over-destroy1").text("Obstacles Burnt: "+statistics[0]["user"]["numObstaclesBurnt"]);
+            $("#game-over-destroy2").text("Obstacles Burnt: "+statistics[1]["user"]["numObstaclesBurnt"]);
+
             return true;
         } else {
+            $("#game-over-rank1").text("Participated: " + username);
+            $("#game-over-rank2").text("Participated: " + statistics[0]["user"]["username"]);
             return false;
         }
     };

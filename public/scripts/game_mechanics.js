@@ -41,14 +41,28 @@ const GameMechanics = (function() {
         // Create the player as according the user setting
         var player;
         var gem;
+        // let playerX, playerY;
+        // let gemX, gemY;
+        // if (Playground.countUsers() == 0){
+        //     playerX = 100;
+        //     playerY = 430;
+        //     gemX = 750;
+        //     gemY = 430;
+        // } else if (Playground.countUsers() == 0){
+        //     playerX = 750;
+        //     playerY = 430;
+        //     gemX = 100;
+        //     gemY = 430;
+        // }
+        let {playerX, playerY, gemX, gemY} = StartGame.retrieveLocation();
         if (Authentication.getUser().avatar == "white"){
-            player = Player(context, 100, 430, gameArea);   // start from bottom left corner
-            gem = Gem(context, 750, 430, "green");           // The eneger core of the opponent
+            player = Player(context, playerX, playerY, gameArea);   // start from bottom left corner
+            gem = Gem(context, gemX, gemY, "green");           // The eneger core of the opponent
             // Playground.initiateLocation(Authentication.getUser().username, 100, 430);   // inititate the location in json
         }
         else if (Authentication.getUser().avatar == "green"){
-            player = Player2(context, 750, 430, gameArea);   // start from top right corner
-            gem = Gem(context, 100, 430, "purple");         // The eneger core of the opponent
+            player = Player2(context, playerX, playerY, gameArea);   // start from top right corner
+            gem = Gem(context, gemX, gemY, "purple");         // The eneger core of the opponent
             // Playground.initiateLocation(Authentication.getUser().username, 750, 430);   // initiate the location in json
         }
         // Playground.getLastLocation();
@@ -78,10 +92,10 @@ const GameMechanics = (function() {
                 // return;
             }
             /* Handle the game over situation here */
-            // if (Playground.gemIsCollected()){
-            //     $("#game-over").show();
-            //     return;
-            // }
+            if (Playground.gemIsCollected()){
+                $("#game-over").show();
+                return;
+            }
 
             if (timeRemaining == 0) {
                 sounds.background.pause();
