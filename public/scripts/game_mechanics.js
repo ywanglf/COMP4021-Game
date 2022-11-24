@@ -41,15 +41,18 @@ const GameMechanics = (function() {
         // Create the player as according the user setting
         var player;
         var gem;
+        var fire;
         if (Authentication.getUser().avatar == "white"){
-            player = Player(context, 100, 430, gameArea);   // start from bottom left corner
+            player = Player(context, 100, 430, gameArea, 0);   // start from bottom left corner
             gem = Gem(context, 750, 430, "green");           // The eneger core of the opponent
             // Playground.initiateLocation(Authentication.getUser().username, 100, 430);   // inititate the location in json
+            fire = Fire(context, 400, 430, "white")
         }
         else if (Authentication.getUser().avatar == "green"){
-            player = Player2(context, 750, 430, gameArea);   // start from top right corner
+            player = Player(context, 750, 430, gameArea, 1);   // start from top right corner
             gem = Gem(context, 100, 430, "purple");         // The eneger core of the opponent
             // Playground.initiateLocation(Authentication.getUser().username, 750, 430);   // initiate the location in json
+            fire = Fire(context, 400, 430, "green")
         }
         // Playground.getLastLocation();
         Playground.initiateStatistics(Authentication.getUser().username);
@@ -65,6 +68,7 @@ const GameMechanics = (function() {
             const gameTimeSoFar = now - gameStartTime;
             const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
             $("#time-remaining").text(timeRemaining);
+
 
             /* Collect the gem here */
             const targetBox = gem.getBoundingBox();
@@ -107,6 +111,7 @@ const GameMechanics = (function() {
             skeleton1.update(now);
             skeleton2.update(now);
             player.update(now);
+            fire.update(now);
             // let {xLocation, yLocation} = Playground.getLastLocation();
             // console.log("--> Get Player: "+xLocation+": "+yLocation);
             // if (xLocation != undefined && yLocation != undefined){
@@ -117,10 +122,6 @@ const GameMechanics = (function() {
             // }
             
             
-            
-            
-            
-
             /* Clear the screen */
             context.clearRect(0, 0, cv.width, cv.height);
 
@@ -133,6 +134,7 @@ const GameMechanics = (function() {
             skeleton1.draw();
             skeleton2.draw();
             player.draw();
+            fire.draw()
             
 
             // console.log("player: "+JSON.stringify(player));
