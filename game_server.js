@@ -193,6 +193,9 @@ io.on("connection", (socket) => {
         onlineUsers[username] = { avatar, name };
         console.log("add to online users: "+ username);
 
+        console.log("--- add user --- ");
+        console.log(onlineUsers);
+        console.log("--- --------- --- ");
         // Broadcast the signed-in user to browser
         io.emit("add user", JSON.stringify(socket.request.session.user));
     }
@@ -207,7 +210,9 @@ io.on("connection", (socket) => {
             console.log("remove from online users: "+ username);
             
             // delete statistics
-            
+            const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
+            statistics.pop();
+            fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
 
             // Broadcast the signed-out user
             io.emit("remove user", JSON.stringify(socket.request.session.user));
@@ -217,6 +222,9 @@ io.on("connection", (socket) => {
     // Set up the get users event
     socket.on("get users", () => {
         // Send the online users to the browser
+        console.log("--- get users --- ");
+        console.log(onlineUsers);
+        console.log("--- --------- --- ");
         socket.emit("users", JSON.stringify(onlineUsers));
     });
 
@@ -334,6 +342,7 @@ io.on("connection", (socket) => {
     // update gem statistics in statistics.json
     socket.on("update gem statistics", username => {
         const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
+        console.log(statistics);
         if (statistics[0]["user"]["username"] == username) {
             statistics[0]["user"]["gem"] = 1;
         } 

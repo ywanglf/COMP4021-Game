@@ -99,9 +99,14 @@ const UserPanel = (function() {
                     Socket.disconnect();
 
                     hide();
+                    $("#game-over").hide();
+                    $("#game-start").show();
+                    $("#game-title").text("..Pairing Up..");
+                    // SignInForm.initialize();
                     SignInForm.show();
                 }
             );
+
         });
     };
 
@@ -270,7 +275,7 @@ const StartGame = (function() {
         // Get the current user
         const currentUser = Authentication.getUser();
 
-        console.log("Cheking on pairing.........");
+        console.log("Checking on pairing.........");
         if (Object.keys(onlineUsers).length == 2){
             console.log(currentUser.username + " is pairing.........");
         }
@@ -278,7 +283,7 @@ const StartGame = (function() {
         // Add the user one-by-one
         for (const username in onlineUsers) {
             if (username != currentUser.username) {
-                console.log(username + " is paired with you successfully.........");
+                console.log("checkPair: "+username + " is paired with you successfully.........");
                 GameMechanics.countdown();
                 break;
             }
@@ -292,7 +297,7 @@ const StartGame = (function() {
 		
 		// Pair the user
 		if (user.username != currentUser.username) {
-            console.log(user.username + " is paired with you successfully.........");
+            console.log("newPair: "+user.username + " is paired with you successfully.........");
             GameMechanics.countdown();
         }
 	};
@@ -366,8 +371,9 @@ const Playground = (function() {
     // check whether either player has achieved winning condition
     const gemIsCollected = function() {
         Socket.getStatistics();
-        if (statistics == undefined || statistics.length == 1) return false;
-
+        console.log(statistics);
+        if (statistics == undefined || statistics.length == 0 || statistics.length == 1) return false;
+        // console.log("Statistics are full to check");
         let username = Authentication.getUser().username;
         let opponentName;
         if (statistics[0]["user"]["username"] == username){

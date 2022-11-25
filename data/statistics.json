@@ -1,18 +1,2 @@
 [
- {
-  "user": {
-   "username": "2",
-   "numObstaclesSet": 0,
-   "numObstaclesBurnt": 0,
-   "gem": 1
-  }
- },
- {
-  "user": {
-   "username": "1",
-   "numObstaclesSet": 0,
-   "numObstaclesBurnt": 0,
-   "gem": 0
-  }
- }
 ]

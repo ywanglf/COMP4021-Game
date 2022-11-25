@@ -41,29 +41,21 @@ const GameMechanics = (function() {
         // Create the player as according the user setting
         var player;
         var gem;
-        // let playerX, playerY;
-        // let gemX, gemY;
-        // if (Playground.countUsers() == 0){
-        //     playerX = 100;
-        //     playerY = 430;
-        //     gemX = 750;
-        //     gemY = 430;
-        // } else if (Playground.countUsers() == 0){
-        //     playerX = 750;
-        //     playerY = 430;
-        //     gemX = 100;
-        //     gemY = 430;
-        // }
+        var fire;
+
         let {playerX, playerY, gemX, gemY} = StartGame.retrieveLocation();
+        console.log(Authentication.getUser().username+ " location: " + playerX+", "+playerY);
         if (Authentication.getUser().avatar == "white"){
-            player = Player(context, playerX, playerY, gameArea);   // start from bottom left corner
+            player = Player(context, playerX, playerY, gameArea, 0);   // start from bottom left corner
             gem = Gem(context, gemX, gemY, "green");           // The eneger core of the opponent
             // Playground.initiateLocation(Authentication.getUser().username, 100, 430);   // inititate the location in json
+            fire = Fire(context, 400, 430, "white")
         }
         else if (Authentication.getUser().avatar == "green"){
-            player = Player2(context, playerX, playerY, gameArea);   // start from top right corner
+            player = Player(context, playerX, playerY, gameArea, 1);   // start from top right corner
             gem = Gem(context, gemX, gemY, "purple");         // The eneger core of the opponent
             // Playground.initiateLocation(Authentication.getUser().username, 750, 430);   // initiate the location in json
+            fire = Fire(context, 400, 430, "green")
         }
         // Playground.getLastLocation();
         Playground.initiateStatistics(Authentication.getUser().username);
@@ -72,13 +64,17 @@ const GameMechanics = (function() {
         
         /* The main processing of the game */
         function doFrame(now) {
-            
+            console.log("entered");
+            $("#game-start").hide();
+            $("#game-over").hide();
+
             if (gameStartTime == 0) gameStartTime = now;
 
             /* Update the time remaining */
             const gameTimeSoFar = now - gameStartTime;
             const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
             $("#time-remaining").text(timeRemaining);
+
 
             /* Collect the gem here */
             const targetBox = gem.getBoundingBox();
@@ -93,6 +89,7 @@ const GameMechanics = (function() {
             }
             /* Handle the game over situation here */
             if (Playground.gemIsCollected()){
+                console.log("collected?");
                 $("#game-over").show();
                 return;
             }
@@ -121,20 +118,9 @@ const GameMechanics = (function() {
             skeleton1.update(now);
             skeleton2.update(now);
             player.update(now);
-            // let {xLocation, yLocation} = Playground.getLastLocation();
-            // console.log("--> Get Player: "+xLocation+": "+yLocation);
-            // if (xLocation != undefined && yLocation != undefined){
-            //     if (Authentication.getUser().avatar == "white")
-            //         player = Player(context, xLocation, yLocation, obstacles);
-            //     else if (Authentication.getUser().avatar == "green")
-            //         player = Player2(context, xLocation, yLocation, obstacles);
-            // }
+            fire.update(now);
             
             
-            
-            
-            
-
             /* Clear the screen */
             context.clearRect(0, 0, cv.width, cv.height);
 
@@ -147,6 +133,7 @@ const GameMechanics = (function() {
             skeleton1.draw();
             skeleton2.draw();
             player.draw();
+            fire.draw()
             
 
             // console.log("player: "+JSON.stringify(player));
@@ -157,7 +144,7 @@ const GameMechanics = (function() {
 
         // $("#game-start").on("click", function() {
             /* Hide the start screen */
-            $("#game-start").hide();
+            // $("#game-start").hide();
             // sounds.background.play();
             /* Handle the keydown of arrow keys and spacebar */
             $(document).on("keydown", function(event) {
@@ -194,6 +181,7 @@ const GameMechanics = (function() {
 
             /* Start the game */
             requestAnimationFrame(doFrame);
+        // }
         // });
 
     };
@@ -210,6 +198,7 @@ const GameMechanics = (function() {
             setTimeout(countdown, 1000);
         } else {
             document.getElementById("game-title").innerHTML = "Start!";
+            counting = 4;
             setTimeout(begin, 1000);
         }
     };

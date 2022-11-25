@@ -3,12 +3,14 @@
 // - `x` - The initial x position of the player
 // - `y` - The initial y position of the player
 // - `gameArea` - The bounding box of the game area
-const Player = function(ctx, x, y, gameArea) {
+// -  `colour` - The coloyr of the player
+const Player = function(ctx, x, y, gameArea, colour) {
 
     // This is the sprite sequences of the player facing different directions.
     // It contains the idling sprite sequences `idleLeft`, `idleUp`, `idleRight` and `idleDown`,
     // and the moving sprite sequences `moveLeft`, `moveUp`, `moveRight` and `moveDown`.
-    const sequences = {
+    const sequences = [{
+        //White
         /* Idling sprite sequences for facing different directions */
         idleDown:  { x: 144, y: 192, width: 48, height: 48, count: 3, timing: 500, loop: true },
         idleLeft:    { x: 144, y: 240, width: 48, height: 48, count: 3, timing: 500, loop: true },
@@ -20,13 +22,27 @@ const Player = function(ctx, x, y, gameArea) {
         moveLeft:    { x: 0, y: 240, width: 48, height: 48, count: 3, timing: 500, loop: true },
         moveRight: { x: 0, y: 288, width: 48, height: 48, count: 3, timing: 500, loop: true },
         moveUp:  { x: 0, y: 336, width: 48, height: 48, count: 3, timing: 500, loop: true }
-    };
+    },
+    {
+        //Green
+        /* Idling sprite sequences for facing different directions */
+        idleDown:  { x: 432, y: 0, width: 48, height: 48, count: 3, timing: 500, loop: true },
+        idleLeft:    { x: 432, y: 48, width: 48, height: 48, count: 3, timing: 500, loop: true },
+        idleRight: { x: 432, y: 96, width: 48, height: 48, count: 3, timing: 500, loop: true },
+        idleUp:  { x: 432, y: 144, width: 48, height: 48, count: 3, timing: 500, loop: true },
+
+        /* Moving sprite sequences for facing different directions */
+        moveDown:  { x: 288, y: 0, width: 48, height: 48, count: 3, timing: 500, loop: true },
+        moveLeft:    { x: 288, y: 48, width: 48, height: 48, count: 3, timing: 500, loop: true },
+        moveRight: { x: 288, y: 96, width: 48, height: 48, count: 3, timing: 500, loop: true },
+        moveUp:  { x: 288, y: 144, width: 48, height: 48, count: 3, timing: 500, loop: true }
+    }];
 
     // This is the sprite object of the player created from the Sprite module.
     const sprite = Sprite(ctx, x, y);
 
     // The sprite object is configured for the player sprite here.
-    sprite.setSequence(sequences.idleDown)
+    sprite.setSequence(sequences[colour].idleDown)
           .setScale(1.5)
         //   .setShadowScale({ x: 0.75, y: 0.20 })
             .setShadowScale({ x: 0, y: 0 })
@@ -51,10 +67,10 @@ const Player = function(ctx, x, y, gameArea) {
     const move = function(dir) {
         if (dir >= 1 && dir <= 4 && dir != direction) {
             switch (dir) {
-                case 1: sprite.setSequence(sequences.moveLeft); break;
-                case 2: sprite.setSequence(sequences.moveUp); break;
-                case 3: sprite.setSequence(sequences.moveRight); break;
-                case 4: sprite.setSequence(sequences.moveDown); break;
+                case 1: sprite.setSequence(sequences[colour].moveLeft); break;
+                case 2: sprite.setSequence(sequences[colour].moveUp); break;
+                case 3: sprite.setSequence(sequences[colour].moveRight); break;
+                case 4: sprite.setSequence(sequences[colour].moveDown); break;
             }
             direction = dir;
             lastDirection = dir;
@@ -66,10 +82,10 @@ const Player = function(ctx, x, y, gameArea) {
     const stop = function(dir) {
         if (direction == dir) {
             switch (dir) {
-                case 1: sprite.setSequence(sequences.idleLeft); break;
-                case 2: sprite.setSequence(sequences.idleUp); break;
-                case 3: sprite.setSequence(sequences.idleRight); break;
-                case 4: sprite.setSequence(sequences.idleDown); break;
+                case 1: sprite.setSequence(sequences[colour].idleLeft); break;
+                case 2: sprite.setSequence(sequences[colour].idleUp); break;
+                case 3: sprite.setSequence(sequences[colour].idleRight); break;
+                case 4: sprite.setSequence(sequences[colour].idleDown); break;
             }
             direction = 0;
         }
