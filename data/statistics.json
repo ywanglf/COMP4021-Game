@@ -7,5 +7,14 @@
    "gem": 0,
    "numFireSet": 0
   }
+ },
+ {
+  "user": {
+   "username": "1",
+   "numObstaclesSet": 0,
+   "numObstaclesBurnt": 0,
+   "gem": 0,
+   "numFireSet": 0
+  }
  }
 ]
