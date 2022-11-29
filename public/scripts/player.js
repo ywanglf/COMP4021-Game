@@ -151,6 +151,55 @@ const Player = function(ctx, x, y, gameArea, colour) {
         }
     };
 
+    // const putFire = function(){
+    //     let fires = [];
+    //     let firetemp = Playground.getFires();
+    //     for (let i = 0; i < firetemp.length; i++){
+    //         fires.push(Fire(ctx, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], colour));
+    //     }
+    //     let { x, y } = sprite.getXY();
+    //     let newFire;
+    //     switch (lastDirection) {
+    //         case 1: {
+    //             // console.log("setting obstacle on the left");
+    //             newFire = Fire(ctx, x-48-1, y, colour);
+    //             break;
+    //         }
+    //         case 2: {
+    //             // console.log("setting obstacle on the top");
+    //             newFire = Fire(ctx, x, y-1, colour);
+    //             break;
+    //         }
+    //         case 3: {
+    //             // console.log("setting obstacle on the right");
+    //             newFire = Fire(ctx, x+48+1, y, colour);
+    //             break;
+    //         }
+    //         case 4: {
+    //             // console.log("setting obstacle on the bottom");
+    //             newFire = Fire(ctx, x, y+48+1, colour);
+    //             break;
+    //         }
+    //     }
+    //     var newBox = newFire.getBoundingBox();
+    //     // console.log("--> new Box: "+newBox.getTop()+"; "+newBox.getLeft()+"; "+newBox.getBottom()+"; "+newBox.getRight()+"; ");
+
+    //     let findIntersection = false;
+    //     for (let i = 0; i < fires.length; i++){
+    //         var box = fires[i].getBoundingBox();
+    //         // console.log("-->     Box: "+box.getTop()+"; "+box.getLeft()+"; "+box.getBottom()+"; "+box.getRight()+"; ");
+    //         if (box.intersect(newBox)){
+    //             findIntersection = true;
+    //             break;
+    //         }
+    //     }
+    //     if (!findIntersection){
+    //         Socket.addFire(newFire.getXY());
+    //         Playground.updateNumFireSet(); 
+    //         // obstacles.push(newObstacle);
+    //     }
+    // };
+
     // This function updates the player depending on his movement.
     // - `time` - The timestamp when this function is called
     const update = function(time) {
@@ -159,6 +208,11 @@ const Player = function(ctx, x, y, gameArea, colour) {
         for (let i = 0; i < temp.length; i++){
             obstacles.push(Obstacle(ctx, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
         }
+        // let fires = [];
+        // let firetemp = Playground.getFires();
+        // for (let i = 0; i < firetemp.length; i++){
+        //     fires.push(Fire(ctx, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], colour));
+        // }
         /* Update the player if the player is moving */
         if (direction != 0) {
             let { x, y } = sprite.getXY();
@@ -185,6 +239,16 @@ const Player = function(ctx, x, y, gameArea, colour) {
                     }
                 }
 
+                // let findFire = false;
+                // for (let i = 0; i < fires.length; i++){
+                //     var box = fires[i].getBoundingBox();
+                //     if ((x >= box.getLeft() && x <= box.getRight() && y >= box.getTop() && y <= box.getBottom()) ||     // left bottom point
+                //         ((x+46) >= box.getLeft() && (x+46) <= box.getRight() && y >= box.getTop() && y <= box.getBottom())){    // right bottom point
+                //         findFire = true;
+                //         break;
+                //     }
+                // }
+
                 if (!findObstacle){
                     sprite.setXY(x, y);
                     Socket.lastLocation(x, y);
@@ -206,6 +270,7 @@ const Player = function(ctx, x, y, gameArea, colour) {
         getBoundingBox: sprite.getBoundingBox,
         draw: sprite.draw,
         putObstacle: putObstacle,
-        update: update
+        update: update,
+        // putFire: putFire
     };
 };

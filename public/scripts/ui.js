@@ -331,6 +331,7 @@ const Playground = (function() {
     let xLocation;
     let yLocation;
     let obstacles;
+    let fires;
     
     const updateObstacles = function(updated) {
         obstacles = updated;
@@ -421,8 +422,23 @@ const Playground = (function() {
         Socket.updateNumObstacleSet(Authentication.getUser().username);
     };
 
+    const updateFires = function(updated) {
+        fires = updated;
+    };
+
+    const getFires = function() {
+        // console.log("--> before: "+obstacles.length);
+        Socket.getFires();
+        // console.log("--> after: "+obstacles.length);
+        return fires;
+    };
+
+    const updateNumFireSet = function() {
+        Socket.updateNumFireSet(Authentication.getUser().username);
+    };
+
     return { updateObstacles, getObstacles, 
         initiateLocation, retrieveLocation, getLastLocation, 
         initiateStatistics, retrieveStatistics, gemIsCollected,
-        updateGemStatistics, updateNumObstacleSet };
+        updateGemStatistics, updateNumObstacleSet, getFires, updateFires, updateNumFireSet };
 })();

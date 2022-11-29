@@ -17,6 +17,7 @@ const GameMechanics = (function() {
         const gemMaxAge = 3000;     // The maximum age of the gems in milliseconds
         let gameStartTime = 0;      // The timestamp when the game starts
         let collectedGems = 0;      // The number of gems collected in the game
+        let playerColour = Authentication.getUser().avatar // colour of the player
 
         /* Create the game area */
                                         //top, left, bottom, right
@@ -38,24 +39,32 @@ const GameMechanics = (function() {
             obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
         }
 
+        // Create Fire (Obstacle size: 24 x 32)
+        let firetemp = Playground.getFires();
+        let fires = [];
+
+        for (let i = 0; i < firetemp.length; i++){
+            fires.push(Fire(context, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], playerColour));
+        }
+
         // Create the player as according the user setting
         var player;
         var gem;
-        var fire;
+        // var fire;
 
         let {playerX, playerY, gemX, gemY} = StartGame.retrieveLocation();
         console.log(Authentication.getUser().username+ " location: " + playerX+", "+playerY);
-        if (Authentication.getUser().avatar == "white"){
+        if (playerColour == "white"){
             player = Player(context, playerX, playerY, gameArea, 0);   // start from bottom left corner
             gem = Gem(context, gemX, gemY, "green");           // The eneger core of the opponent
             // Playground.initiateLocation(Authentication.getUser().username, 100, 430);   // inititate the location in json
-            fire = Fire(context, 400, 430, "white")
+            // fire = Fire(context, 400, 430, "white")
         }
-        else if (Authentication.getUser().avatar == "green"){
+        else if (playerColour == "green"){
             player = Player(context, playerX, playerY, gameArea, 1);   // start from top right corner
             gem = Gem(context, gemX, gemY, "purple");         // The eneger core of the opponent
             // Playground.initiateLocation(Authentication.getUser().username, 750, 430);   // initiate the location in json
-            fire = Fire(context, 400, 430, "green")
+            // fire = Fire(context, 400, 430, "green")
         }
         // Playground.getLastLocation();
         Playground.initiateStatistics(Authentication.getUser().username);
@@ -64,7 +73,7 @@ const GameMechanics = (function() {
         
         /* The main processing of the game */
         function doFrame(now) {
-            console.log("entered");
+            // console.log("entered");
             $("#game-start").hide();
             $("#game-over").hide();
 
@@ -105,11 +114,11 @@ const GameMechanics = (function() {
             
 
             /* Update the sprites */
-            temp = Playground.getObstacles();
-            obstacles = [];
-            for (let i = 0; i < temp.length; i++){
-                obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
-            }
+            // temp = Playground.getObstacles();
+            // obstacles = [];
+            // for (let i = 0; i < temp.length; i++){
+            //     obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
+            // }
             obstacles.forEach(function(obstacle) {
                 obstacle.update(now);
             });
@@ -118,7 +127,17 @@ const GameMechanics = (function() {
             skeleton1.update(now);
             skeleton2.update(now);
             player.update(now);
-            fire.update(now);
+
+            // let firetemp = Playground.getFires();
+            // let fires = [];
+
+            // for (let i = 0; i < firetemp.length; i++){
+            //     fires.push(Fire(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"], playerColour));
+            // }
+            fires.forEach(function(fire) {
+                fire.update(now);
+            });
+            // fire.update(now);
             
             
             /* Clear the screen */
@@ -133,7 +152,10 @@ const GameMechanics = (function() {
             skeleton1.draw();
             skeleton2.draw();
             player.draw();
-            fire.draw()
+            fires.forEach(function(fire) {
+                fire.draw(now);
+            });
+            // fire.draw()
             
 
             // console.log("player: "+JSON.stringify(player));
@@ -160,6 +182,9 @@ const GameMechanics = (function() {
 
                     //key 'Q'
                     case 81: player.putObstacle(); break;
+
+                    //key 'W'
+                    // case 87: player.putFire(); break;
                 }
             });
 

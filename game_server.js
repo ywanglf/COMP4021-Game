@@ -319,8 +319,9 @@ io.on("connection", (socket) => {
         let numObstaclesSet = 0;
         let numObstaclesBurnt = 0;
         let gem = 0;
+        let numFireSet = 0;
         const json = {
-            user: {username, numObstaclesSet, numObstaclesBurnt, gem}
+            user: {username, numObstaclesSet, numObstaclesBurnt, gem, numFireSet}
         }
         const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
 
@@ -372,6 +373,40 @@ io.on("connection", (socket) => {
         } 
         else if (statistics[1]["user"]["username"] == username) {
             statistics[1]["user"]["numObstaclesBurnt"] += 1;
+        }
+        fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
+    });
+
+    socket.on("get fires", () => {
+        const fires = JSON.parse(fs.readFileSync("data/fires.json"));
+        io.emit("fires", JSON.stringify(fires));
+    });
+
+    socket.on("post fire", fire => {
+        // console.log("....2....");
+        // console.log("game server post obstacles: "+obstacle.x);,
+        let x = fire.x;
+        let y = fire.y;
+        const json = {
+            anyName: { x, y }
+        }
+        // console.log("--> json: "+json);
+        const fires = JSON.parse(fs.readFileSync("data/fires.json"));
+        // console.log(obstacles);
+        fires.push(json);
+        fs.writeFileSync("data/fires.json", JSON.stringify(fires, null, " "));
+        // Broadcast the message
+        io.emit("fires", JSON.stringify(fires)); 
+        socket.emit("add fires", JSON.stringify(fires));
+    });
+
+    socket.on("update num fire set statistics", username => {
+        const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
+        if (statistics[0]["user"]["username"] == username) {
+            statistics[0]["user"]["numFireSet"] += 1;
+        } 
+        else if (statistics[1]["user"]["username"] == username) {
+            statistics[1]["user"]["numFireSet"] += 1;
         }
         fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
     });

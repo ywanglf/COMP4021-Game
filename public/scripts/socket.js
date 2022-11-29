@@ -76,6 +76,17 @@ const Socket = (function() {
         socket.on("statistics", (statistics) => {
             Playground.retrieveStatistics(statistics);
         });
+
+        socket.on("fires", (fires) => {
+            fires = JSON.parse(fires);
+            // console.log(obstacles);
+            Playground.updateFires(fires);
+        });
+
+        socket.on("add fire", (fire) => {
+            fire = JSON.parse(fire);
+
+        });
     };
 
     // This function disconnects the socket from the server
@@ -154,9 +165,27 @@ const Socket = (function() {
         }
     }
 
+    const addFire = function(newFire) {
+        if (socket && socket.connected) {
+            socket.emit("post fire", newFire);
+        }
+    };
+
+    const getFires = function(){
+        if (socket && socket.connected) {
+            socket.emit("get fires");
+        }
+    };
+
+    const updateNumFireSet = function(username) {
+        if (socket && socket.connected) {
+            socket.emit("update num fire set statistics", username);
+        }
+    }
+
     return { getSocket, connect, disconnect, postMessage, 
         addObstacle, getObstacles, 
         inititatePlayerLocation, lastLocation, getLocation, 
         initiateStatistics, getStatistics, 
-        updateGemStatistics, updateNumObstacleSet, updateNumObstacleBurnt };
+        updateGemStatistics, updateNumObstacleSet, updateNumObstacleBurnt, getFires, addFire, updateNumFireSet };
 })();
