@@ -185,6 +185,11 @@ const io = new Server(httpServer);
 // A JavaScript object storing online users
 const onlineUsers = {}
 
+// Use the Socket.io Server 
+io.use((socket, next) => {
+    gameSession(socket.request, {}, next)
+});
+
 // Handle the web socket connection
 io.on("connection", (socket) => {
     // Add a new user to the online user list
@@ -251,6 +256,29 @@ io.on("connection", (socket) => {
         // Broadcast the message
         io.emit("obstacles", JSON.stringify(obstacles));
         socket.emit("add obstacle", JSON.stringify(obstacle));
+    });
+    
+    socket.on("get fires", () => {
+        const fires = JSON.parse(fs.readFileSync("data/fires.json"));
+        io.emit("fires", JSON.stringify(fires));
+    });
+
+    socket.on("post fire", fire => {
+        // console.log("....2....");
+        // console.log("game server post obstacles: "+obstacle.x);,
+        let x = fire.x;
+        let y = fire.y;
+        const json = {
+            anyName: { x, y }
+        }
+        // console.log("--> json: "+json);
+        const fires = JSON.parse(fs.readFileSync("data/fires.json"));
+        // console.log(obstacles);
+        fires.push(json);
+        fs.writeFileSync("data/fires.json", JSON.stringify(fires, null, " "));
+        // Broadcast the message
+        io.emit("fires", JSON.stringify(fires)); 
+        socket.emit("add fire", JSON.stringify(fire));
     });
 
     // initiate the username, x, y locations in the location.json
@@ -377,28 +405,7 @@ io.on("connection", (socket) => {
         fs.writeFileSync("data/statistics.json", JSON.stringify(statistics, null, " "));
     });
 
-    socket.on("get fires", () => {
-        const fires = JSON.parse(fs.readFileSync("data/fires.json"));
-        io.emit("fires", JSON.stringify(fires));
-    });
-
-    socket.on("post fire", fire => {
-        // console.log("....2....");
-        // console.log("game server post obstacles: "+obstacle.x);,
-        let x = fire.x;
-        let y = fire.y;
-        const json = {
-            anyName: { x, y }
-        }
-        // console.log("--> json: "+json);
-        const fires = JSON.parse(fs.readFileSync("data/fires.json"));
-        // console.log(obstacles);
-        fires.push(json);
-        fs.writeFileSync("data/fires.json", JSON.stringify(fires, null, " "));
-        // Broadcast the message
-        io.emit("fires", JSON.stringify(fires)); 
-        socket.emit("add fires", JSON.stringify(fires));
-    });
+    
 
     socket.on("update num fire set statistics", username => {
         const statistics = JSON.parse(fs.readFileSync("data/statistics.json"));
@@ -412,10 +419,7 @@ io.on("connection", (socket) => {
     });
 });
 
-// Use the Socket.io Server 
-io.use((socket, next) => {
-    gameSession(socket.request, {}, next)
-});
+
 
 // Use a web server to listen at port 8000
 httpServer.listen(8000, () => {

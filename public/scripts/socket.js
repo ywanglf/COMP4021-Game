@@ -66,6 +66,16 @@ const Socket = (function() {
             obstacle = JSON.parse(obstacle);
 
         });
+        
+        socket.on("fires", (fires) => {
+            fires = JSON.parse(fires);
+            console.log(fires);
+            Playground.updateFires(fires);
+        });
+
+        socket.on("add fire", (fire) => {
+            fire = JSON.parse(fire);
+        });
 
         socket.on("location", (json) => {
             console.log("location; x = "+json["x"]+"; y = "+json["y"]);
@@ -76,17 +86,7 @@ const Socket = (function() {
         socket.on("statistics", (statistics) => {
             Playground.retrieveStatistics(statistics);
         });
-
-        socket.on("fires", (fires) => {
-            fires = JSON.parse(fires);
-            // console.log(obstacles);
-            Playground.updateFires(fires);
-        });
-
-        socket.on("add fire", (fire) => {
-            fire = JSON.parse(fire);
-
-        });
+        
     };
 
     // This function disconnects the socket from the server
@@ -112,6 +112,18 @@ const Socket = (function() {
     const getObstacles = function(){
         if (socket && socket.connected) {
             socket.emit("get obstacles");
+        }
+    };
+    
+    const addFire = function(newFire) {
+        if (socket && socket.connected) {
+            socket.emit("post fire", newFire);
+        }
+    };
+
+    const getFires = function(){
+        if (socket && socket.connected) {
+            socket.emit("get fires");
         }
     };
 
@@ -165,17 +177,7 @@ const Socket = (function() {
         }
     }
 
-    const addFire = function(newFire) {
-        if (socket && socket.connected) {
-            socket.emit("post fire", newFire);
-        }
-    };
-
-    const getFires = function(){
-        if (socket && socket.connected) {
-            socket.emit("get fires");
-        }
-    };
+    
 
     const updateNumFireSet = function(username) {
         if (socket && socket.connected) {

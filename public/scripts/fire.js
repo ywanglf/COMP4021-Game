@@ -27,8 +27,23 @@ const Fire = function(ctx, x, y, colour) {
     // The sprite object is configured for the gem sprite here.
     sprite.setSequence(sequences.start)
           .setScale(2)
-          .setShadowScale({ x: 0.75, y: 0.2 })
+          .setShadowScale({ x: 0, y: 0 })
           .useSheet(sheet);
+
+    // This is the birth time of the gem for finding its age.
+    let birthTime = performance.now();
+
+    // This function gets the age (in millisecond) of the gem.
+    // - `now` - The current timestamp
+    const getAge = function(now) {
+        // console.log("now: " + now + " birthtime: " + birthTime)
+        return now - birthTime;
+    };
+
+    const destroy = function() {
+       // to do
+        // console.log("destroy")
+    };
 
 
     // The methods are returned as an object here.
@@ -37,6 +52,8 @@ const Fire = function(ctx, x, y, colour) {
         setXY: sprite.setXY,
         getBoundingBox: sprite.getBoundingBox,
         draw: sprite.draw,
-        update: sprite.update
+        update: sprite.update,
+        getAge: getAge,
+        destroy: destroy
     };
 };

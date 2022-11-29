@@ -14,7 +14,7 @@ const GameMechanics = (function() {
         };
 
         const totalGameTime = 240;   // Total game time in seconds
-        const gemMaxAge = 3000;     // The maximum age of the gems in milliseconds
+        const fireMaxAge = 3000;     // The maximum age of the fire in milliseconds
         let gameStartTime = 0;      // The timestamp when the game starts
         let collectedGems = 0;      // The number of gems collected in the game
         let playerColour = Authentication.getUser().avatar // colour of the player
@@ -42,6 +42,8 @@ const GameMechanics = (function() {
         // Create Fire (Fire size: 24 x 32)
         let firetemp = Playground.getFires();
         let fires = [];
+
+        console.log(firetemp)
 
         for (let i = 0; i < firetemp.length; i++){
             fires.push(Fire(context, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], playerColour));
@@ -139,6 +141,12 @@ const GameMechanics = (function() {
             });
             // fire.update(now);
             
+            fires.forEach(function(fire) {
+                if(fire.getAge(now) > fireMaxAge){
+                fire.destroy()
+            }
+            });
+            
             
             /* Clear the screen */
             context.clearRect(0, 0, cv.width, cv.height);
@@ -184,7 +192,7 @@ const GameMechanics = (function() {
                     case 81: player.putObstacle(); break;
 
                     //key 'W'
-                    // case 87: player.putFire(); break;
+                    case 87: player.putFire(); break;
                 }
             });
 

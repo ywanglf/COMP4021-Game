@@ -343,6 +343,18 @@ const Playground = (function() {
         // console.log("--> after: "+obstacles.length);
         return obstacles;
     };
+    
+    const updateFires = function(updated) {
+        fires = updated;
+        // console.log(fires)
+    };
+
+    const getFires = function() {
+        // console.log("--> before: "+fires.length());
+        Socket.getFires();
+        // console.log("--> after: "+fires.length());
+        return fires;
+    };
 
     const initiateLocation = function(username, x, y) {
         console.log("-> usr: "+username+"; x: "+x+"; y: " + y);
@@ -372,7 +384,7 @@ const Playground = (function() {
     // check whether either player has achieved winning condition
     const gemIsCollected = function() {
         Socket.getStatistics();
-        console.log(statistics);
+        // console.log(statsistics);
         if (statistics == undefined || statistics.length == 0 || statistics.length == 1) return false;
         // console.log("Statistics are full to check");
         let username = Authentication.getUser().username;
@@ -420,17 +432,6 @@ const Playground = (function() {
 
     const updateNumObstacleSet = function() {
         Socket.updateNumObstacleSet(Authentication.getUser().username);
-    };
-
-    const updateFires = function(updated) {
-        fires = updated;
-    };
-
-    const getFires = function() {
-        // console.log("--> before: "+obstacles.length);
-        Socket.getFires();
-        // console.log("--> after: "+obstacles.length);
-        return fires;
     };
 
     const updateNumFireSet = function() {

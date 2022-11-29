@@ -151,54 +151,54 @@ const Player = function(ctx, x, y, gameArea, colour) {
         }
     };
 
-    // const putFire = function(){
-    //     let fires = [];
-    //     let firetemp = Playground.getFires();
-    //     for (let i = 0; i < firetemp.length; i++){
-    //         fires.push(Fire(ctx, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], colour));
-    //     }
-    //     let { x, y } = sprite.getXY();
-    //     let newFire;
-    //     switch (lastDirection) {
-    //         case 1: {
-    //             // console.log("setting obstacle on the left");
-    //             newFire = Fire(ctx, x-48-1, y, colour);
-    //             break;
-    //         }
-    //         case 2: {
-    //             // console.log("setting obstacle on the top");
-    //             newFire = Fire(ctx, x, y-1, colour);
-    //             break;
-    //         }
-    //         case 3: {
-    //             // console.log("setting obstacle on the right");
-    //             newFire = Fire(ctx, x+48+1, y, colour);
-    //             break;
-    //         }
-    //         case 4: {
-    //             // console.log("setting obstacle on the bottom");
-    //             newFire = Fire(ctx, x, y+48+1, colour);
-    //             break;
-    //         }
-    //     }
-    //     var newBox = newFire.getBoundingBox();
-    //     // console.log("--> new Box: "+newBox.getTop()+"; "+newBox.getLeft()+"; "+newBox.getBottom()+"; "+newBox.getRight()+"; ");
+    const putFire = function(){
+        let fires = [];
+        let firetemp = Playground.getFires();
+        for (let i = 0; i < firetemp.length; i++){
+            fires.push(Fire(ctx, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], colour));
+        }
+        let { x, y } = sprite.getXY();
+        let newFire;
+        switch (lastDirection) {
+            case 1: {
+                // console.log("setting obstacle on the left");
+                newFire = Fire(ctx, x-48-1, y, colour);
+                break;
+            }
+            case 2: {
+                // console.log("setting obstacle on the top");
+                newFire = Fire(ctx, x, y-1, colour);
+                break;
+            }
+            case 3: {
+                // console.log("setting obstacle on the right");
+                newFire = Fire(ctx, x+48+1, y, colour);
+                break;
+            }
+            case 4: {
+                // console.log("setting obstacle on the bottom");
+                newFire = Fire(ctx, x, y+48+1, colour);
+                break;
+            }
+        }
+        var newBox = newFire.getBoundingBox();
+        // console.log("--> new Box: "+newBox.getTop()+"; "+newBox.getLeft()+"; "+newBox.getBottom()+"; "+newBox.getRight()+"; ");
 
-    //     let findIntersection = false;
-    //     for (let i = 0; i < fires.length; i++){
-    //         var box = fires[i].getBoundingBox();
-    //         // console.log("-->     Box: "+box.getTop()+"; "+box.getLeft()+"; "+box.getBottom()+"; "+box.getRight()+"; ");
-    //         if (box.intersect(newBox)){
-    //             findIntersection = true;
-    //             break;
-    //         }
-    //     }
-    //     if (!findIntersection){
-    //         Socket.addFire(newFire.getXY());
-    //         Playground.updateNumFireSet(); 
-    //         // obstacles.push(newObstacle);
-    //     }
-    // };
+        let findIntersection = false;
+        for (let i = 0; i < fires.length; i++){
+            var box = fires[i].getBoundingBox();
+            // console.log("-->     Box: "+box.getTop()+"; "+box.getLeft()+"; "+box.getBottom()+"; "+box.getRight()+"; ");
+            if (box.intersect(newBox)){
+                findIntersection = true;
+                break;
+            }
+        }
+        if (!findIntersection){
+            Socket.addFire(newFire.getXY());
+            Playground.updateNumFireSet(); 
+            // obstacles.push(newObstacle);
+        }
+    };
 
     // This function updates the player depending on his movement.
     // - `time` - The timestamp when this function is called
@@ -271,6 +271,6 @@ const Player = function(ctx, x, y, gameArea, colour) {
         draw: sprite.draw,
         putObstacle: putObstacle,
         update: update,
-        // putFire: putFire
+        putFire: putFire
     };
 };
