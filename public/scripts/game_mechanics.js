@@ -39,7 +39,7 @@ const GameMechanics = (function() {
             obstacles.push(Obstacle(context, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
         }
 
-        // Create Fire (Obstacle size: 24 x 32)
+        // Create Fire (Fire size: 24 x 32)
         let firetemp = Playground.getFires();
         let fires = [];
 
