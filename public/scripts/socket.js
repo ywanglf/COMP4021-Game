@@ -69,7 +69,7 @@ const Socket = (function() {
         
         socket.on("fires", (fires) => {
             fires = JSON.parse(fires);
-            console.log(fires);
+            // console.log(fires);
             Playground.updateFires(fires);
         });
 

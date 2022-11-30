@@ -1,6 +1,6 @@
 const GameMechanics = (function() {
     let counting = 4;
-    const begin = function() {
+    const begin = function(firetemp) {
         // Start the game
         /* Get the canvas and 2D context */
         const cv = $("canvas").get(0);
@@ -40,10 +40,10 @@ const GameMechanics = (function() {
         }
 
         // Create Fire (Fire size: 24 x 32)
-        let firetemp = Playground.getFires();
+        // let firetemp = Playground.getFires();
         let fires = [];
 
-        console.log(firetemp)
+        // console.log(firetemp)
 
         for (let i = 0; i < firetemp.length; i++){
             fires.push(Fire(context, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], playerColour));
@@ -224,6 +224,7 @@ const GameMechanics = (function() {
         // Decrease the remaining time
         counting = counting - 1;
         console.log(counting);
+        let firetemp = Playground.getFires();
         // Continue the countdown if there is still time;
         // otherwise, start the game when the time is up
         if (counting > 0){
@@ -232,7 +233,7 @@ const GameMechanics = (function() {
         } else {
             document.getElementById("game-title").innerHTML = "Start!";
             counting = 4;
-            setTimeout(begin, 1000);
+            setTimeout(begin(firetemp), 1000);
         }
     };
 
