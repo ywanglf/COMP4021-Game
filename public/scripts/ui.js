@@ -346,7 +346,7 @@ const Playground = (function() {
     
     const updateFires = function(updated) {
         fires = updated;
-        // console.log(fires)
+        console.log(fires)
     };
 
     const getFires = function() {

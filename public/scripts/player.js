@@ -151,9 +151,8 @@ const Player = function(ctx, x, y, gameArea, colour) {
         }
     };
 
-    const putFire = function(){
+    const putFire = function(firetemp){
         let fires = [];
-        let firetemp = Playground.getFires();
         for (let i = 0; i < firetemp.length; i++){
             fires.push(Fire(ctx, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], colour));
         }
@@ -193,9 +192,12 @@ const Player = function(ctx, x, y, gameArea, colour) {
                 break;
             }
         }
+
+        console.log(findIntersection)
+
         if (!findIntersection){
             Socket.addFire(newFire.getXY());
-            Playground.updateNumFireSet(); 
+            // Playground.updateNumFireSet(); 
             // obstacles.push(newObstacle);
         }
     };

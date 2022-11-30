@@ -265,20 +265,25 @@ io.on("connection", (socket) => {
 
     socket.on("post fire", fire => {
         // console.log("....2....");
-        // console.log("game server post obstacles: "+obstacle.x);,
+        console.log("game server post obstacles: " + fire.x);
         let x = fire.x;
         let y = fire.y;
         const json = {
             anyName: { x, y }
         }
-        // console.log("--> json: "+json);
+        console.log("--> json: "+json);
         const fires = JSON.parse(fs.readFileSync("data/fires.json"));
-        // console.log(obstacles);
+        console.log("before add: " + fires);
         fires.push(json);
+        console.log("after add: " + fires);
+
         fs.writeFileSync("data/fires.json", JSON.stringify(fires, null, " "));
+        console.log("synced fires.json")
         // Broadcast the message
         io.emit("fires", JSON.stringify(fires)); 
+        console.log("game server posted fires")
         socket.emit("add fire", JSON.stringify(fire));
+        console.log("game server posted add fire")
     });
 
     // initiate the username, x, y locations in the location.json

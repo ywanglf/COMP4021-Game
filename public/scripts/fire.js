@@ -7,7 +7,7 @@ const Fire = function(ctx, x, y, colour) {
 
     // This is the sprite sequences of the ghost fire of two colours
     // `green` and `white`
-    let sheet;
+    let sheet = "static/ghost_fire_sprite/png/white/start/burning_start_1.png";
 
     if(colour == "white"){
         sheet = "static/ghost_fire_sprite/png/white/start/burning_start_1.png"

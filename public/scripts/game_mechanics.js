@@ -192,7 +192,7 @@ const GameMechanics = (function() {
                     case 81: player.putObstacle(); break;
 
                     //key 'W'
-                    case 87: player.putFire(); break;
+                    case 87: player.putFire(firetemp); break;
                 }
             });
 
