@@ -143,7 +143,15 @@ const GameMechanics = (function() {
             
             fires.forEach(function(fire) {
                 if(fire.getAge(now) > fireMaxAge){
-                fire.destroy()
+                var fireBox=fire.getBoundingBox()
+
+                obstacles.forEach(function(obstacle){
+                    var obstacleBox = obstacle.getBoundingBox()
+                    
+                    if(fireBox.intersect(obstacleBox)){
+                        fire.destroy()
+                    }
+                })
             }
             });
             

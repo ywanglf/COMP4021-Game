@@ -42,7 +42,7 @@ const Fire = function(ctx, x, y, colour) {
 
     const destroy = function() {
        // to do
-        // console.log("destroy")
+        console.log("destroy")
     };
 
 
