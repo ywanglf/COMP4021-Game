@@ -75,7 +75,7 @@ const Socket = (function() {
 
         socket.on("add fire", (fire) => {
             fire = JSON.parse(fire);
-            console.log(fire)
+            // console.log(fire)
         });
 
         socket.on("location", (json) => {
@@ -119,7 +119,7 @@ const Socket = (function() {
     const addFire = function(newFire) {
         if (socket && socket.connected) {
             socket.emit("post fire", newFire);
-            console.log("socket post fire " + newFire)
+            // console.log("socket post fire " + newFire)
         }
     };
 

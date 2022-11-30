@@ -210,11 +210,11 @@ const Player = function(ctx, x, y, gameArea, colour) {
         for (let i = 0; i < temp.length; i++){
             obstacles.push(Obstacle(ctx, temp[i]["anyName"]["x"], temp[i]["anyName"]["y"]));
         }
-        // let fires = [];
-        // let firetemp = Playground.getFires();
-        // for (let i = 0; i < firetemp.length; i++){
-        //     fires.push(Fire(ctx, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], colour));
-        // }
+        let fires = [];
+        let firetemp = Playground.getFires();
+        for (let i = 0; i < firetemp.length; i++){
+            fires.push(Fire(ctx, firetemp[i]["anyName"]["x"], firetemp[i]["anyName"]["y"], colour));
+        }
         /* Update the player if the player is moving */
         if (direction != 0) {
             let { x, y } = sprite.getXY();
@@ -241,17 +241,17 @@ const Player = function(ctx, x, y, gameArea, colour) {
                     }
                 }
 
-                // let findFire = false;
-                // for (let i = 0; i < fires.length; i++){
-                //     var box = fires[i].getBoundingBox();
-                //     if ((x >= box.getLeft() && x <= box.getRight() && y >= box.getTop() && y <= box.getBottom()) ||     // left bottom point
-                //         ((x+46) >= box.getLeft() && (x+46) <= box.getRight() && y >= box.getTop() && y <= box.getBottom())){    // right bottom point
-                //         findFire = true;
-                //         break;
-                //     }
-                // }
+                let findFire = false;
+                for (let i = 0; i < fires.length; i++){
+                    var box = fires[i].getBoundingBox();
+                    if (((x) >= box.getLeft() && (x) <= box.getRight() && (y-32) >= box.getTop() && (y-32) <= box.getBottom()) ||     // left bottom point
+                        ((x+46) >= box.getLeft() && (x+46) <= box.getRight() && (y-32) >= box.getTop() && (y-32) <= box.getBottom())){    // right bottom point
+                        findFire = true;
+                        break;
+                    }
+                }
 
-                if (!findObstacle){
+                if (!findObstacle && !findFire){
                     sprite.setXY(x, y);
                     Socket.lastLocation(x, y);
                 }
